@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OPE 23-24-25 Osakidetza – Batería Común · Preguntas 231-245</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #F0F0F0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        .contenedor-principal {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+            padding: 20px;
+            z-index: 1;
+        }
+
+        section.contenedor-test, footer.rectangulo-resumen {
+            background-color: white;
+            padding: 20px;
+            border-radius: 2px;
+            width: 800px;
+            max-width: 800px;
+            text-align: center;
+        }
+
+        section.contenedor-test {
+            border: 1px solid #2b2a7f;
+        }
+
+        .titulo-test {
+            font-size: 24px;
+            font-weight: bold;
+            color: #6c757d;
+            margin: 0 0 8px 0;
+            text-align: center;
+        }
+        .subtitulo-test {
+            font-size: 14px;
+            color: #6c757d;
+            margin: 0 0 20px 0;
+            text-align: center;
+        }
+
+        .pregunta {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #333;
+            text-align: left;
+        }
+        .opciones-contenedor {
+            display: grid;
+            gap: 3px;
+            margin-bottom: 25px;
+        }
+        .opcion {
+            background-color: white;
+            border: none;
+            color: #495057;
+            padding: 15px;
+            border-radius: 2px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.2s, border-color 0.2s;
+            text-align: left;
+        }
+        .opcion:hover {
+            background-color: #dee2e6;
+        }
+        .opcion.seleccionada {
+            background-color: #cce5ff;
+            border-color: #2b2a7f;
+            color: #004085;
+        }
+        .opcion.correcta {
+            background-color: #85d192;
+            border-color: #85d192;
+            color: #155724;
+            cursor: default;
+        }
+        .opcion.incorrecta {
+            background-color: #f0a1a8;
+            border-color: #f0a1a8;
+            color: #721c24;
+            cursor: default;
+        }
+        .opcion.correcta:hover, .opcion.incorrecta:hover {
+            background-color: #85d192;
+            color: #155724;
+            border-color: #85d192;
+        }
+        .opcion.incorrecta:hover {
+            background-color: #f0a1a8;
+            color: #721c24;
+            border-color: #f0a1a8;
+        }
+        .navegacion-btn-contenedor {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        .comprobar-btn, #finalizar-btn {
+            background-color: #cce5ff;
+            color: #004085;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 2px;
+            font-size: 12px;
+            width: 100px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .comprobar-btn:hover, #finalizar-btn:hover {
+            background-color: #b3d7ff;
+        }
+        .hidden {
+            display: none;
+        }
+
+        .navegacion-btn {
+            background-color: #E0E0E0;
+            color: #555;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 2px;
+            font-size: 12px;
+            width: 100px;
+            cursor: pointer;
+            transition: background-color 0.2s, color 0.2s;
+        }
+        .navegacion-btn:hover {
+            background-color: #CFCFCF;
+        }
+        .navegacion-btn:disabled {
+            background-color: #f1f1f1;
+            color: #aaa;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+        footer.rectangulo-resumen {
+            background-color: #F0F0F0;
+            padding: 20px;
+            border-radius: 2px;
+            width: 800px;
+            margin-top: 20px;
+            overflow-y: auto;
+        }
+        .indices-contenedor {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+        .indice-pregunta {
+            width: 30px;
+            height: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            background-color: white;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            color: #495057;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        .indice-pregunta.activa {
+            background-color: #cce5ff;
+            color: #004085;
+            border: none;
+        }
+        .indice-pregunta:hover {
+            background-color: #dee2e6;
+        }
+        .indice-pregunta.correcta {
+            background-color: #85d192;
+            color: #155724;
+        }
+        .indice-pregunta.incorrecta {
+            background-color: #f0a1a8;
+            color: #495057;
+        }
+
+        .custom-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .custom-modal {
+            background-color: white;
+            padding: 30px;
+            border-radius: 2px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+        }
+
+        .custom-modal h3 {
+            margin-top: 0;
+            color: #333;
+        }
+
+        .custom-modal button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 2px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+
+        .resultados-finales-container {
+            text-align: center;
+        }
+        .resultados-finales-texto {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        .resultados-finales-correctas {
+            color: #155724;
+            font-weight: bold;
+        }
+        .resultados-finales-incorrectas {
+            color: #721c24;
+            font-weight: bold;
+        }
+
+        @media (max-width: 800px) {
+            section.contenedor-test, footer.rectangulo-resumen {
+                width: 95%;
+                padding: 15px;
+            }
+            .opcion {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="contenedor-principal">
+        <h1 class="titulo-test">OPE 23-24-25 Osakidetza – Batería Común</h1>
+        <p class="subtitulo-test">Estrategia de Seguridad del Paciente 2020-2030 · Preguntas 231–245</p>
+        <section class="contenedor-test">
+            <article id="contenido-pregunta">
+                <div class="pregunta" id="pregunta-texto"></div>
+                <div class="opciones-contenedor" id="opciones-contenedor"></div>
+                <div class="navegacion-btn-contenedor">
+                    <button id="comprobar-btn" class="comprobar-btn">Comprobar</button>
+                    <button id="siguiente-btn" class="navegacion-btn">Siguiente</button>
+                </div>
+            </article>
+            <div id="resultados-finales" class="hidden resultados-finales-container">
+                <h2>Resultados Finales</h2>
+                <div id="resultados-texto" class="resultados-finales-texto"></div>
+            </div>
+        </section>
+        <footer class="rectangulo-resumen" id="rectangulo-resumen">
+            <div class="indices-contenedor" id="indices-contenedor"></div>
+            <button id="finalizar-btn" class="comprobar-btn" style="width: 100%; margin-top: 20px;">Finalizar Test</button>
+        </footer>
+    </div>
+
+    <div id="custom-modal-overlay" class="custom-modal-overlay hidden">
+        <div class="custom-modal">
+            <p id="custom-modal-message"></p>
+            <button id="custom-modal-ok">Aceptar</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            let preguntas = [
+  {
+    "question": "¿Cuál es el periodo de vigencia indicado en el título de la \"Estrategia de Seguridad del Paciente\" de Osakidetza, y en qué mes y año se publicó su primera edición? (231)",
+    "options": [
+      "a) Vigencia 2021-2030, editada en enero de 2023.",
+      "b) Vigencia 2020-2024, editada en diciembre de 2022.",
+      "c) Vigencia 2020-2030, editada en abril de 2023.",
+      "d) Vigencia 2023-2030, editada en julio de 2023."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "¿Cuál es el Objetivo General establecido para la \"Estrategia de Seguridad del Paciente 20-30\"? (232)",
+    "options": [
+      "a) Reducir a cero los eventos adversos mediante la incorporación de tecnología robótica.",
+      "b) Mejorar la calidad asistencial del sistema sanitario vasco.",
+      "c) Promover el máximo nivel de seguridad posible, minimizando la probabilidad de ocurrencia de incidentes de seguridad en el transcurso de la asistencia sanitaria.",
+      "d) Centralizar la gestión de riesgos en un único organismo fuera de Osakidetza."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "El principio hipocrático al que se hace referencia en la \"Estrategia de Seguridad del Paciente 20-30\", y que la ciudadanía asume que se verifica en el transcurso de la actividad asistencial, es: (233)",
+    "options": [
+      "a) Salus populi suprema lex esto (la salud del pueblo es la ley suprema).",
+      "b) Corpus sanum in mente sana (mente sana en cuerpo sano).",
+      "c) Lex artis ad hoc (ley del arte para el caso).",
+      "d) Primum non nocere (primero no hacer daño)."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "¿A qué periodos correspondieron las dos estrategias previas de seguridad de paciente publicadas en Euskadi, de las cuales esta Estrategia 20-30 es la tercera? (234)",
+    "options": [
+      "a) 2008-2012 y 2013-2017.",
+      "b) 2010-2015 y 2016-2020.",
+      "c) 2013-2016 y 2017-2020.",
+      "d) 2018-2021 y 2022-2025."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "¿Cuáles son las dos nuevas Líneas de Acción incorporadas en la \"Estrategia de Seguridad del Paciente 20-30\" que responden a una necesidad percibida por las personas expertas? (235)",
+    "options": [
+      "a) Seguridad en Pediatría y Buenas Prácticas en el Uso de Biológicos.",
+      "b) Atención en Cuidados Paliativos y Seguridad Domiciliaria.",
+      "c) La Seguridad de Paciente en Emergencias y la Prevención del Suicidio.",
+      "d) Seguridad en Salud Mental y Prevención de las Úlceras por Presión."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "De acuerdo con la \"Estrategia de Seguridad de Paciente 20-30\", ¿cómo se denomina al incidente de seguridad que, a diferencia del incidente sin daño, sí ocasiona algún tipo de daño a las personas atendidas? (236)",
+    "options": [
+      "a) Error no evitable.",
+      "b) Circunstancia notificable.",
+      "c) Fallo latente.",
+      "d) Evento Adverso."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "¿Cuál es el enfoque principal de la Línea de Acción Corporativa L2 de la \"Estrategia de Seguridad del Paciente 20-30\"? (237)",
+    "options": [
+      "a) Implicación de pacientes en su seguridad.",
+      "b) Conciliación de la medicación.",
+      "c) Atención a las segundas y terceras víctimas.",
+      "d) Gestión de los incidentes de seguridad."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "¿Cuál de los siguientes es el Objetivo Específico número 1 de la \"Estrategia de Seguridad del Paciente 20-30\", enfocado en el cambio interno? (238)",
+    "options": [
+      "a) Garantizar la continuidad de las líneas de acción y proyectos previamente implantados.",
+      "b) Impulsar la cultura de seguridad de paciente en las organizaciones de servicios de Osakidetza, promoviendo la formación y sensibilización como aspectos clave.",
+      "c) Optimizar la prescripción de pruebas diagnósticas que utilizan radiación ionizante.",
+      "d) Implantar un sistema de identificación inequívoca de pacientes en todas las fases del proceso asistencial."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "Según la \"Estrategia de Seguridad del Paciente 20-30\", el Objetivo General de la Línea de Acción L4 \"Implicación de pacientes en su seguridad\" es: (239)",
+    "options": [
+      "a) Garantizar que todas las personas pacientes reciban un plan de acogida con información de seguridad.",
+      "b) Potenciar las capacidades de las personas pacientes para actuar como personal de apoyo en las unidades de enfermería.",
+      "c) Promover la participación de pacientes, familiares y personas cuidadoras para mejorar la seguridad del sistema sanitario.",
+      "d) Establecer un sistema de recompensas económicas para pacientes que notifiquen incidentes."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "La Línea de Acción Corporativa L8 de la \"Estrategia de Seguridad del Paciente 20-30\" está dedicada a: (240)",
+    "options": [
+      "a) Conciliación de la medicación.",
+      "b) Prevención y control de las infecciones relacionadas con la asistencia sanitaria.",
+      "c) Seguridad en el proceso asistencial gestación-parto-puerperio.",
+      "d) Seguridad transfusional."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "¿A qué se refiere la Línea de Acción Corporativa L10 de la \"Estrategia de Seguridad del Paciente 20-30\", cuyo objetivo es reducir los eventos adversos específicos de un proceso asistencial? (241)",
+    "options": [
+      "a) Cirugía Segura.",
+      "b) Atención Primaria.",
+      "c) Seguridad en el proceso asistencial gestación-parto-puerperio.",
+      "d) Seguridad de las personas pacientes en los servicios de urgencias."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "¿Qué documento se menciona en la \"Estrategia de Seguridad del Paciente 20-30\" como el que determinó que las personas atendidas por un sistema medicalizado (tipo 061/112) presentan un mayor porcentaje de incidentes de seguridad en el entorno de Emergencias? (242)",
+    "options": [
+      "a) Estudio Nacional de Efectos Adversos en centros hospitalarios (ENEAS).",
+      "b) Estudio APEAS.",
+      "c) Estudio EVADUR.",
+      "d) Informe del Instituto de Medicina de los Estados Unidos (IOM)."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "El capítulo de Formación de la \"Estrategia de Seguridad del Paciente 20-30\" señala que, además de impulsar el desarrollo de prácticas seguras, las organizaciones comprometidas orientan sus esfuerzos a aumentar la formación en los llamados: (243)",
+    "options": [
+      "a) Factores humanos o factores no técnicos.",
+      "b) Factores biomédicos y patofisiológicos.",
+      "c) Factores económicos y de sostenibilidad.",
+      "d) Factores organizativos de Osakidetza."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "¿Cuál de las siguientes Líneas de Acción de la \"Estrategia de Seguridad del Paciente 20-30\" NO está relacionada con el sistema de utilización del medicamento? (244)",
+    "options": [
+      "a) L5. Conciliación de la medicación.",
+      "b) L14. Buenas prácticas asociadas a la utilización de medicación.",
+      "c) L6. Optimización en la prescripción de pruebas diagnósticas que utilizan radiación ionizante.",
+      "d) L7. Seguridad transfusional (Nota: la seguridad transfusional se considera una línea separada, aunque implica la administración de productos sanguíneos)."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "¿Cuántas Líneas de Acción Corporativas (L1 a L...) se definen en la Estrategia de Seguridad del Paciente 20-30? (245)",
+    "options": [
+      "a) 14 líneas de acción.",
+      "b) 15 líneas de acción.",
+      "c) 16 líneas de acción.",
+      "d) 17 líneas de acción."
+    ],
+    "correct": 3
+  }
+];
+
+            let estado = {
+                preguntaActual: 0,
+                totalPreguntas: preguntas.length,
+                respuestasCorrectas: 0,
+                respuestasIncorrectas: 0
+            };
+
+            let DOM = {};
+            let botonesOpciones = [];
+            let indicesPreguntas = [];
+
+            function toggleClasses(element, addClass, removeClasses = []) {
+                removeClasses.forEach(cls => element.classList.remove(cls));
+                if (addClass) element.classList.add(addClass);
+            }
+
+            function mostrarModal(message) {
+                DOM.modalMessage.textContent = message;
+                DOM.modalOverlay.style.display = 'flex';
+            }
+
+            function ocultarModal() {
+                DOM.modalOverlay.style.display = 'none';
+            }
+
+            function toggleFinalizarTest() {
+                if (DOM.finalizarBtn.textContent === 'Volver al Test') {
+                    DOM.contenidoPregunta.classList.remove('hidden');
+                    DOM.resultadosFinales.classList.add('hidden');
+                    DOM.finalizarBtn.textContent = 'Finalizar Test';
+                    mostrarPregunta();
+                } else {
+                    mostrarResultados();
+                }
+            }
+
+            function marcarRespuesta(preguntaIndex) {
+                const pregunta = preguntas[preguntaIndex];
+                botonesOpciones.forEach((boton, index) => {
+                    toggleClasses(boton, null, ['seleccionada', 'correcta', 'incorrecta']);
+                    if (index === pregunta.correct) {
+                        toggleClasses(boton, 'correcta');
+                    } else if (index === pregunta.respuestaUsuario) {
+                        toggleClasses(boton, 'incorrecta');
+                    }
+                });
+            }
+
+            function mostrarPregunta() {
+                const { preguntaActual } = estado;
+                const pregunta = preguntas[preguntaActual];
+
+                DOM.preguntaTexto.textContent = pregunta.question;
+
+                botonesOpciones.forEach((boton, index) => {
+                    boton.textContent = pregunta.options[index];
+                    boton.disabled = pregunta.comprobada;
+                    toggleClasses(boton, null, ['seleccionada', 'correcta', 'incorrecta']);
+                });
+
+                indicesPreguntas.forEach((indice, index) => {
+                    toggleClasses(indice, null, ['activa']);
+                    if (index === preguntaActual) toggleClasses(indice, 'activa');
+                });
+
+                if (pregunta.comprobada) {
+                    marcarRespuesta(preguntaActual);
+                }
+
+                DOM.comprobarBtn.classList.toggle('hidden', pregunta.comprobada);
+                actualizarEstadoBotones();
+            }
+
+            function manejarSeleccion(event) {
+                const boton = event.target.closest('.opcion');
+                if (boton) {
+                    const pregunta = preguntas[estado.preguntaActual];
+                    if (!pregunta.comprobada) {
+                        botonesOpciones.forEach(b => toggleClasses(b, null, ['seleccionada']));
+                        toggleClasses(boton, 'seleccionada');
+                    }
+                }
+            }
+
+            function comprobarRespuesta() {
+                const respuestaSeleccionadaActual = DOM.opcionesContenedor.querySelector('.opcion.seleccionada');
+                if (!respuestaSeleccionadaActual) {
+                    mostrarModal('Por favor, selecciona una respuesta antes de comprobar.');
+                    return;
+                }
+                const { preguntaActual } = estado;
+                const pregunta = preguntas[preguntaActual];
+                const respuestaIndex = parseInt(respuestaSeleccionadaActual.dataset.index);
+
+                pregunta.respuestaUsuario = respuestaIndex;
+                pregunta.comprobada = true;
+                pregunta.esCorrecta = (respuestaIndex === pregunta.correct);
+
+                if (pregunta.esCorrecta) {
+                    estado.respuestasCorrectas++;
+                } else {
+                    estado.respuestasIncorrectas++;
+                }
+
+                marcarRespuesta(preguntaActual);
+                actualizarResumen();
+
+                botonesOpciones.forEach(boton => boton.disabled = true);
+                DOM.comprobarBtn.classList.add('hidden');
+            }
+
+            function actualizarEstadoBotones() {
+                const { preguntaActual, totalPreguntas } = estado;
+                const esUltimaPregunta = preguntaActual === totalPreguntas - 1;
+                DOM.siguienteBtn.textContent = esUltimaPregunta ? 'Terminar' : 'Siguiente';
+            }
+
+            function siguientePregunta() {
+                const { preguntaActual, totalPreguntas } = estado;
+                if (preguntaActual < totalPreguntas - 1) {
+                    estado.preguntaActual++;
+                    mostrarPregunta();
+                } else {
+                    mostrarResultados();
+                }
+            }
+
+            function volverPregunta() {
+                const { preguntaActual } = estado;
+                if (preguntaActual > 0) {
+                    estado.preguntaActual--;
+                    mostrarPregunta();
+                }
+            }
+
+            function mostrarResultados() {
+                const { respuestasCorrectas, respuestasIncorrectas } = estado;
+                DOM.contenidoPregunta.classList.add('hidden');
+                DOM.resultadosFinales.classList.remove('hidden');
+
+                const correctasSpan = `<span class="resultados-finales-correctas">Correctas: ${respuestasCorrectas}</span>`;
+                const incorrectasSpan = `<span class="resultados-finales-incorrectas">Incorrectas: ${respuestasIncorrectas}</span>`;
+                DOM.resultadosTexto.innerHTML = `${correctasSpan} | ${incorrectasSpan}`;
+
+                DOM.finalizarBtn.textContent = 'Volver al Test';
+                DOM.rectanguloResumen.style.marginTop = '20px';
+            }
+
+            function crearIndices() {
+                DOM.indicesContenedor.innerHTML = Array.from(
+                    {length: estado.totalPreguntas},
+                    (_, i) => `<div class="indice-pregunta" data-index="${i}">${i + 231}</div>`
+                ).join('');
+                indicesPreguntas = DOM.indicesContenedor.querySelectorAll('.indice-pregunta');
+            }
+
+            function manejarClickIndice(event) {
+                const indice = event.target.closest('.indice-pregunta');
+                if (indice) {
+                    estado.preguntaActual = parseInt(indice.dataset.index);
+                    mostrarPregunta();
+                }
+            }
+
+            function actualizarResumen() {
+                indicesPreguntas.forEach((indice, index) => {
+                    toggleClasses(indice, null, ['correcta', 'incorrecta']);
+                    const pregunta = preguntas[index];
+                    if (pregunta.comprobada) {
+                        toggleClasses(indice, pregunta.esCorrecta ? 'correcta' : 'incorrecta');
+                    }
+                });
+            }
+
+            function cacheElements() {
+                return {
+                    preguntaTexto: document.getElementById('pregunta-texto'),
+                    opcionesContenedor: document.getElementById('opciones-contenedor'),
+                    siguienteBtn: document.getElementById('siguiente-btn'),
+                    comprobarBtn: document.getElementById('comprobar-btn'),
+                    indicesContenedor: document.getElementById('indices-contenedor'),
+                    contenedorTest: document.querySelector('section.contenedor-test'),
+                    rectanguloResumen: document.querySelector('footer.rectangulo-resumen'),
+                    modalOverlay: document.getElementById('custom-modal-overlay'),
+                    modalMessage: document.getElementById('custom-modal-message'),
+                    modalOkBtn: document.getElementById('custom-modal-ok'),
+                    contenidoPregunta: document.getElementById('contenido-pregunta'),
+                    resultadosFinales: document.getElementById('resultados-finales'),
+                    resultadosTexto: document.getElementById('resultados-texto'),
+                    finalizarBtn: document.getElementById('finalizar-btn')
+                };
+            }
+
+            function initData() {
+                preguntas = preguntas.map(p => ({
+                    ...p,
+                    respuestaUsuario: null,
+                    comprobada: false,
+                    esCorrecta: false
+                }));
+
+                const fragmentoOpciones = document.createDocumentFragment();
+                for (let i = 0; i < 4; i++) {
+                    const boton = document.createElement('button');
+                    boton.className = 'opcion';
+                    boton.dataset.index = i;
+                    fragmentoOpciones.appendChild(boton);
+                }
+                DOM.opcionesContenedor.appendChild(fragmentoOpciones);
+
+                botonesOpciones = Array.from(DOM.opcionesContenedor.querySelectorAll('.opcion'));
+
+                crearIndices();
+            }
+
+            function setupEvents() {
+                DOM.contenedorTest.addEventListener('click', (event) => {
+                    const target = event.target;
+                    if (target.id === 'siguiente-btn') {
+                        siguientePregunta();
+                    } else if (target.id === 'volver-btn') {
+                        volverPregunta();
+                    } else if (target.id === 'comprobar-btn') {
+                        comprobarRespuesta();
+                    } else if (target.classList.contains('opcion')) {
+                        manejarSeleccion(event);
+                    }
+                });
+
+                DOM.rectanguloResumen.addEventListener('click', (event) => {
+                    const target = event.target;
+                    if (target.id === 'finalizar-btn') {
+                        toggleFinalizarTest();
+                    } else if (target.classList.contains('indice-pregunta')) {
+                        manejarClickIndice(event);
+                    }
+                });
+
+                DOM.modalOkBtn.addEventListener('click', ocultarModal);
+            }
+
+            function init() {
+                DOM = cacheElements();
+                initData();
+                setupEvents();
+                mostrarPregunta();
+            }
+
+            init();
+        });
+    </script>
+</body>
+</html>

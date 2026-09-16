@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OPE 23-24-25 Osakidetza Técnico/a Especialista Informática</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #F0F0F0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .contenedor-principal {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+            padding: 40px 20px;
+            width: 100%;
+            max-width: 860px;
+            box-sizing: border-box;
+        }
+
+        h1.titulo-test {
+            font-size: 24px;
+            font-weight: bold;
+            color: #6c757d;
+            margin: 0 0 10px 0;
+            text-align: center;
+        }
+
+        .subtitulo {
+            font-size: 14px;
+            color: #999;
+            margin: 0 0 10px 0;
+            text-align: center;
+        }
+
+        .contenedor-menu {
+            background-color: white;
+            border: 1px solid #2b2a7f;
+            border-radius: 2px;
+            padding: 30px 25px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .menu-titulo {
+            font-size: 15px;
+            font-weight: bold;
+            color: #495057;
+            margin: 0 0 20px 0;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .grid-botones {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .boton-test {
+            background-color: #fff;
+            border: 1px solid #dee2e6;
+            border-radius: 2px;
+            padding: 16px 14px;
+            cursor: pointer;
+            text-align: left;
+            transition: background-color 0.2s, border-color 0.2s;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            text-decoration: none;
+        }
+
+        .boton-test:hover {
+            background-color: #cce5ff;
+            border-color: #2b2a7f;
+        }
+
+        .boton-intervalo {
+            font-size: 15px;
+            font-weight: bold;
+            color: #004085;
+        }
+
+        .boton-descripcion {
+            font-size: 12px;
+            color: #6c757d;
+            line-height: 1.4;
+        }
+
+        .boton-test.ultimo {
+            grid-column: 1 / -1;
+        }
+
+        @media (max-width: 600px) {
+            .grid-botones {
+                grid-template-columns: 1fr;
+            }
+            .boton-test.ultimo {
+                grid-column: 1;
+            }
+            h1.titulo-test {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="contenedor-principal">
+        <h1 class="titulo-test">OPE 23-24-25 Osakidetza Técnico/a Especialista Informática</h1>
+
+        <div class="contenedor-menu">
+            <p class="menu-titulo">Bloques de preguntas</p>
+            <div class="grid-botones">
+
+                <a class="boton-test" href="test/Tec_esp_infor_1a18.html" target="_blank">
+                    <span class="boton-intervalo">Preguntas 1 – 18</span>
+                    <span class="boton-descripcion">Hardware: PC, microprocesadores, memoria, pantallas y almacenamiento.</span>
+                </a>
+
+                <a class="boton-test" href="test/Tec_esp_infor_19a28.html" target="_blank">
+                    <span class="boton-intervalo">Preguntas 19 – 28</span>
+                    <span class="boton-descripcion">Sistemas operativos: evolución, tipos, gestión de procesos, memoria y archivos.</span>
+                </a>
+
+                <a class="boton-test" href="test/Tec_esp_infor_29a41_44_49.html" target="_blank">
+                    <span class="boton-intervalo">Preguntas 29 – 41, 44 y 49</span>
+                    <span class="boton-descripcion">Redes: modelo OSI/TCP-IP, topologías, medios de transmisión, IPv4/IPv6 y Ethernet.</span>
+                </a>
+
+                <a class="boton-test" href="test/Tec_esp_infor_42a43_45a48_50a53.html" target="_blank">
+                    <span class="boton-intervalo">Preguntas 42 – 43, 45 – 48 y 50 – 53</span>
+                    <span class="boton-descripcion">Internet de las Cosas (IoT): tecnologías, protocolos y tipos de comunicación.</span>
+                </a>
+
+                <a class="boton-test" href="test/Tec_esp_infor_54a63.html" target="_blank">
+                    <span class="boton-intervalo">Preguntas 54 – 63</span>
+                    <span class="boton-descripcion">Ciclo de vida del software: fases, modelos y gestión de la configuración.</span>
+                </a>
+
+                <a class="boton-test" href="test/Tec_esp_infor_64a75.html" target="_blank">
+                    <span class="boton-intervalo">Preguntas 64 – 75</span>
+                    <span class="boton-descripcion">Mantenimiento del software: tipos, normas ISO 12207/14764 y Leyes de Lehman.</span>
+                </a>
+
+                <a class="boton-test" href="test/Tec_esp_infor_76a88.html" target="_blank">
+                    <span class="boton-intervalo">Preguntas 76 – 88</span>
+                    <span class="boton-descripcion">Windows 11: instalación, seguridad, despliegue y herramientas de administración.</span>
+                </a>
+
+                <a class="boton-test" href="test/Tec_esp_infor_89a100.html" target="_blank">
+                    <span class="boton-intervalo">Preguntas 89 – 100</span>
+                    <span class="boton-descripcion">Windows Server 2022: Active Directory, roles FSMO, DHCP, GPO y RAID.</span>
+                </a>
+
+                <a class="boton-test" href="test/Tec_esp_infor_101a113.html" target="_blank">
+                    <span class="boton-intervalo">Preguntas 101 – 113</span>
+                    <span class="boton-descripcion">Microsoft 365: OneDrive, SharePoint Online y Microsoft Teams.</span>
+                </a>
+
+                <a class="boton-test" href="test/Tec_esp_infor_114a120.html" target="_blank">
+                    <span class="boton-intervalo">Preguntas 114 – 120</span>
+                    <span class="boton-descripcion">Seguridad informática: principios básicos, objetivos y niveles de madurez.</span>
+                </a>
+
+                <a class="boton-test" href="test/Tec_esp_infor_121a133_135a138.html" target="_blank">
+                    <span class="boton-intervalo">Preguntas 121 – 133 y 135 – 138</span>
+                    <span class="boton-descripcion">Seguridad informática: vulnerabilidades, incidentes, riesgos y auditoría.</span>
+                </a>
+
+                <a class="boton-test" href="test/Tec_esp_infor_139a148.html" target="_blank">
+                    <span class="boton-intervalo">Preguntas 139 – 148</span>
+                    <span class="boton-descripcion">RGPD: principios, derechos de las personas interesadas y brechas de seguridad.</span>
+                </a>
+
+                <a class="boton-test" href="test/Tec_esp_infor_134_149a163.html" target="_blank">
+                    <span class="boton-intervalo">Preguntas 134 y 149 – 163</span>
+                    <span class="boton-descripcion">Legislación nacional de protección de datos (LOPDGDD) y telecomunicaciones (Ley 32/2003).</span>
+                </a>
+
+                <a class="boton-test" href="test/Tec_esp_infor_164a175.html" target="_blank">
+                    <span class="boton-intervalo">Preguntas 164 – 175</span>
+                    <span class="boton-descripcion">Firma digital: Ley 6/2020 de servicios electrónicos de confianza.</span>
+                </a>
+
+                <a class="boton-test" href="test/Tec_esp_infor_176a188.html" target="_blank">
+                    <span class="boton-intervalo">Preguntas 176 – 188</span>
+                    <span class="boton-descripcion">ITIL 4: gestión de cambios, incidentes, problemas y solicitudes de servicio.</span>
+                </a>
+
+                <a class="boton-test" href="test/Tec_esp_infor_189a200.html" target="_blank">
+                    <span class="boton-intervalo">Preguntas 189 – 200</span>
+                    <span class="boton-descripcion">Esquema Nacional de Seguridad (ENS): principios, requisitos y CCN-CERT.</span>
+                </a>
+
+            </div>
+        </div>
+    </div>
+</body>
+</html>

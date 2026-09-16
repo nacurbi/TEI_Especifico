@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OPE 23-24-25 Osakidetza – Batería Común · Preguntas 246-255</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #F0F0F0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        .contenedor-principal {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+            padding: 20px;
+            z-index: 1;
+        }
+
+        section.contenedor-test, footer.rectangulo-resumen {
+            background-color: white;
+            padding: 20px;
+            border-radius: 2px;
+            width: 800px;
+            max-width: 800px;
+            text-align: center;
+        }
+
+        section.contenedor-test {
+            border: 1px solid #2b2a7f;
+        }
+
+        .titulo-test {
+            font-size: 24px;
+            font-weight: bold;
+            color: #6c757d;
+            margin: 0 0 8px 0;
+            text-align: center;
+        }
+        .subtitulo-test {
+            font-size: 14px;
+            color: #6c757d;
+            margin: 0 0 20px 0;
+            text-align: center;
+        }
+
+        .pregunta {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #333;
+            text-align: left;
+        }
+        .opciones-contenedor {
+            display: grid;
+            gap: 3px;
+            margin-bottom: 25px;
+        }
+        .opcion {
+            background-color: white;
+            border: none;
+            color: #495057;
+            padding: 15px;
+            border-radius: 2px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.2s, border-color 0.2s;
+            text-align: left;
+        }
+        .opcion:hover {
+            background-color: #dee2e6;
+        }
+        .opcion.seleccionada {
+            background-color: #cce5ff;
+            border-color: #2b2a7f;
+            color: #004085;
+        }
+        .opcion.correcta {
+            background-color: #85d192;
+            border-color: #85d192;
+            color: #155724;
+            cursor: default;
+        }
+        .opcion.incorrecta {
+            background-color: #f0a1a8;
+            border-color: #f0a1a8;
+            color: #721c24;
+            cursor: default;
+        }
+        .opcion.correcta:hover, .opcion.incorrecta:hover {
+            background-color: #85d192;
+            color: #155724;
+            border-color: #85d192;
+        }
+        .opcion.incorrecta:hover {
+            background-color: #f0a1a8;
+            color: #721c24;
+            border-color: #f0a1a8;
+        }
+        .navegacion-btn-contenedor {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        .comprobar-btn, #finalizar-btn {
+            background-color: #cce5ff;
+            color: #004085;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 2px;
+            font-size: 12px;
+            width: 100px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .comprobar-btn:hover, #finalizar-btn:hover {
+            background-color: #b3d7ff;
+        }
+        .hidden {
+            display: none;
+        }
+
+        .navegacion-btn {
+            background-color: #E0E0E0;
+            color: #555;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 2px;
+            font-size: 12px;
+            width: 100px;
+            cursor: pointer;
+            transition: background-color 0.2s, color 0.2s;
+        }
+        .navegacion-btn:hover {
+            background-color: #CFCFCF;
+        }
+        .navegacion-btn:disabled {
+            background-color: #f1f1f1;
+            color: #aaa;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+        footer.rectangulo-resumen {
+            background-color: #F0F0F0;
+            padding: 20px;
+            border-radius: 2px;
+            width: 800px;
+            margin-top: 20px;
+            overflow-y: auto;
+        }
+        .indices-contenedor {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+        .indice-pregunta {
+            width: 30px;
+            height: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            background-color: white;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            color: #495057;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        .indice-pregunta.activa {
+            background-color: #cce5ff;
+            color: #004085;
+            border: none;
+        }
+        .indice-pregunta:hover {
+            background-color: #dee2e6;
+        }
+        .indice-pregunta.correcta {
+            background-color: #85d192;
+            color: #155724;
+        }
+        .indice-pregunta.incorrecta {
+            background-color: #f0a1a8;
+            color: #495057;
+        }
+
+        .custom-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .custom-modal {
+            background-color: white;
+            padding: 30px;
+            border-radius: 2px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+        }
+
+        .custom-modal h3 {
+            margin-top: 0;
+            color: #333;
+        }
+
+        .custom-modal button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 2px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+
+        .resultados-finales-container {
+            text-align: center;
+        }
+        .resultados-finales-texto {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        .resultados-finales-correctas {
+            color: #155724;
+            font-weight: bold;
+        }
+        .resultados-finales-incorrectas {
+            color: #721c24;
+            font-weight: bold;
+        }
+
+        @media (max-width: 800px) {
+            section.contenedor-test, footer.rectangulo-resumen {
+                width: 95%;
+                padding: 15px;
+            }
+            .opcion {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="contenedor-principal">
+        <h1 class="titulo-test">OPE 23-24-25 Osakidetza – Batería Común</h1>
+        <p class="subtitulo-test">II Plan para la Igualdad de Mujeres y Hombres en Osakidetza (2025-2028) · Preguntas 246–255</p>
+        <section class="contenedor-test">
+            <article id="contenido-pregunta">
+                <div class="pregunta" id="pregunta-texto"></div>
+                <div class="opciones-contenedor" id="opciones-contenedor"></div>
+                <div class="navegacion-btn-contenedor">
+                    <button id="comprobar-btn" class="comprobar-btn">Comprobar</button>
+                    <button id="siguiente-btn" class="navegacion-btn">Siguiente</button>
+                </div>
+            </article>
+            <div id="resultados-finales" class="hidden resultados-finales-container">
+                <h2>Resultados Finales</h2>
+                <div id="resultados-texto" class="resultados-finales-texto"></div>
+            </div>
+        </section>
+        <footer class="rectangulo-resumen" id="rectangulo-resumen">
+            <div class="indices-contenedor" id="indices-contenedor"></div>
+            <button id="finalizar-btn" class="comprobar-btn" style="width: 100%; margin-top: 20px;">Finalizar Test</button>
+        </footer>
+    </div>
+
+    <div id="custom-modal-overlay" class="custom-modal-overlay hidden">
+        <div class="custom-modal">
+            <p id="custom-modal-message"></p>
+            <button id="custom-modal-ok">Aceptar</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            let preguntas = [
+  {
+    "question": "Según el diagnóstico del II Plan para la Igualdad de Mujeres y Hombres en Osakidetza, ¿qué porcentaje de mujeres y hombres, respectivamente, componía la plantilla total de Osakidetza en enero de 2025? (246)",
+    "options": [
+      "a) 60% mujeres y 40% hombres.",
+      "b) 75% mujeres y 25% hombres.",
+      "c) 80% mujeres y 20% hombres.",
+      "d) 90% mujeres y 10% hombres."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "Una de las metas del II Plan para la Igualdad de Mujeres y Hombres en Osakidetza es la \"CAPACITACIÓN EN IGUALDAD\". ¿Cuál es su objetivo principal? (247)",
+    "options": [
+      "a) Reducir la brecha de género en investigación en un 4%.",
+      "b) Conseguir que todas las personas trabajadoras de Osakidetza conozcan el Plan y el Protocolo de Acoso.",
+      "c) Reducir a la mitad las categorías con brecha retributiva superior al 5%.",
+      "d) Garantizar la formación básica, progresiva, permanente y obligatoria de todo el personal de Osakidetza."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "¿Qué institución aprueba el II Plan para la Igualdad de Mujeres y Hombres en Osakidetza (2025-2028)? (248)",
+    "options": [
+      "a) Mesa Sectorial de Sanidad.",
+      "b) Emakunde.",
+      "c) Consejo de Administración de Osakidetza.",
+      "d) Dirección General de Osakidetza."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "De acuerdo con el II Plan para la Igualdad de Mujeres y Hombres en Osakidetza (2025-2028), ¿qué concepto define, dentro del diagnóstico de la organización, la dificultad invisible que encuentran las mujeres para acceder a puestos de mayor responsabilidad y toma de decisiones? (249)",
+    "options": [
+      "a) Segregación horizontal.",
+      "b) Suelo pegajoso.",
+      "c) Brecha salarial técnica.",
+      "d) Techo de cristal."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "Una de las Metas del II Plan para la Igualdad de Mujeres y Hombres en Osakidetza (2025-2028) es \"CORRESPONSABILIDAD\". ¿Cuál es el objetivo específico asociado a esta meta? (250)",
+    "options": [
+      "a) Reducir el porcentaje de hombres en puestos de dirección.",
+      "b) Reducir a la mitad la brecha de género en investigación.",
+      "c) Reducir, al menos, en un 2% la brecha de género existente en las medidas de conciliación para cuidados.",
+      "d) Aumentar el número de investigaciones con perspectiva de género interseccional en un 4%."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "¿Cuál fue el objetivo del I Plan de Igualdad, teniendo en cuenta su condición de primer plan estratégico de Osakidetza en esta materia? (251)",
+    "options": [
+      "a) Consolidar los avances logrados y profundizar el proceso transformador.",
+      "b) Establecer unos cimientos sólidos para garantizar el cumplimiento de la legislación y la alineación a los marcos estratégicos.",
+      "c) Reducir la brecha salarial a la mitad en todas las categorías profesionales.",
+      "d) Lograr la aprobación por parte del Consejo de Dirección de Osakidetza en julio de 2025."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "¿Cuál es la Meta 5 establecida en el II Plan para la Igualdad de Mujeres y Hombres en Osakidetza (2025-2028)? (252)",
+    "options": [
+      "a) Reducir la brecha de género existente en las medidas de conciliación para cuidados.",
+      "b) Capacitación en Igualdad, garantizando la formación progresiva del personal.",
+      "c) Igualdad Salarial, con el objetivo de reducir a la mitad las categorías que tienen una brecha retributiva > 5%.",
+      "d) Investigación, aumentando el número de investigaciones con perspectiva de género."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "¿Cuál es el carácter y el propósito fundamental del II Plan para la Igualdad de Mujeres y Hombres en Osakidetza (2025-2028)? (253)",
+    "options": [
+      "a) Es un documento informativo sobre la normativa europea en materia de igualdad sin aplicación directa en la asistencia sanitaria.",
+      "b) Se define como una guía de recomendaciones de adhesión voluntaria para las diferentes Organizaciones de Servicios.",
+      "c) Se trata de un reglamento técnico dirigido exclusivamente al personal con funciones de gestión y dirección.",
+      "d) Es un instrumento estratégico de planificación que busca integrar de forma transversal la perspectiva de género en la cultura y gestión de la organización."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "El enfoque de \"interseccionalidad\" mencionado en los fundamentos del II Plan para la Igualdad de Mujeres y Hombres en Osakidetza (2025-2028) implica: (254)",
+    "options": [
+      "a) Analizar cómo el género interactúa con otros factores (edad, origen, discapacidad, orientación sexual, etc.) para identificar formas específicas de discriminación.",
+      "b) Tratar todas las desigualdades de forma aislada para evitar confusiones estadísticas.",
+      "c) Fomentar el intercambio de personal entre diferentes centros hospitalarios para equilibrar la plantilla.",
+      "d) Priorizar la atención sanitaria en las intersecciones de las grandes áreas metropolitanas."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "En relación con la violencia machista contra las mujeres, el II Plan para la Igualdad de Mujeres y Hombres en Osakidetza (2025-2028) establece como línea de actuación prioritaria: (255)",
+    "options": [
+      "a) El refuerzo de la prevención, la detección precoz y la mejora de la respuesta asistencial integrada desde el sistema de salud.",
+      "b) La derivación inmediata de cualquier caso detectado a servicios jurídicos externos, sin intervención del personal sanitario.",
+      "c) La creación de un registro anónimo donde las personas profesionales puedan denunciar conductas sin seguimiento posterior.",
+      "d) La limitación de la atención asistencial únicamente a las consecuencias físicas derivadas de la violencia."
+    ],
+    "correct": 0
+  }
+];
+
+            let estado = {
+                preguntaActual: 0,
+                totalPreguntas: preguntas.length,
+                respuestasCorrectas: 0,
+                respuestasIncorrectas: 0
+            };
+
+            let DOM = {};
+            let botonesOpciones = [];
+            let indicesPreguntas = [];
+
+            function toggleClasses(element, addClass, removeClasses = []) {
+                removeClasses.forEach(cls => element.classList.remove(cls));
+                if (addClass) element.classList.add(addClass);
+            }
+
+            function mostrarModal(message) {
+                DOM.modalMessage.textContent = message;
+                DOM.modalOverlay.style.display = 'flex';
+            }
+
+            function ocultarModal() {
+                DOM.modalOverlay.style.display = 'none';
+            }
+
+            function toggleFinalizarTest() {
+                if (DOM.finalizarBtn.textContent === 'Volver al Test') {
+                    DOM.contenidoPregunta.classList.remove('hidden');
+                    DOM.resultadosFinales.classList.add('hidden');
+                    DOM.finalizarBtn.textContent = 'Finalizar Test';
+                    mostrarPregunta();
+                } else {
+                    mostrarResultados();
+                }
+            }
+
+            function marcarRespuesta(preguntaIndex) {
+                const pregunta = preguntas[preguntaIndex];
+                botonesOpciones.forEach((boton, index) => {
+                    toggleClasses(boton, null, ['seleccionada', 'correcta', 'incorrecta']);
+                    if (index === pregunta.correct) {
+                        toggleClasses(boton, 'correcta');
+                    } else if (index === pregunta.respuestaUsuario) {
+                        toggleClasses(boton, 'incorrecta');
+                    }
+                });
+            }
+
+            function mostrarPregunta() {
+                const { preguntaActual } = estado;
+                const pregunta = preguntas[preguntaActual];
+
+                DOM.preguntaTexto.textContent = pregunta.question;
+
+                botonesOpciones.forEach((boton, index) => {
+                    boton.textContent = pregunta.options[index];
+                    boton.disabled = pregunta.comprobada;
+                    toggleClasses(boton, null, ['seleccionada', 'correcta', 'incorrecta']);
+                });
+
+                indicesPreguntas.forEach((indice, index) => {
+                    toggleClasses(indice, null, ['activa']);
+                    if (index === preguntaActual) toggleClasses(indice, 'activa');
+                });
+
+                if (pregunta.comprobada) {
+                    marcarRespuesta(preguntaActual);
+                }
+
+                DOM.comprobarBtn.classList.toggle('hidden', pregunta.comprobada);
+                actualizarEstadoBotones();
+            }
+
+            function manejarSeleccion(event) {
+                const boton = event.target.closest('.opcion');
+                if (boton) {
+                    const pregunta = preguntas[estado.preguntaActual];
+                    if (!pregunta.comprobada) {
+                        botonesOpciones.forEach(b => toggleClasses(b, null, ['seleccionada']));
+                        toggleClasses(boton, 'seleccionada');
+                    }
+                }
+            }
+
+            function comprobarRespuesta() {
+                const respuestaSeleccionadaActual = DOM.opcionesContenedor.querySelector('.opcion.seleccionada');
+                if (!respuestaSeleccionadaActual) {
+                    mostrarModal('Por favor, selecciona una respuesta antes de comprobar.');
+                    return;
+                }
+                const { preguntaActual } = estado;
+                const pregunta = preguntas[preguntaActual];
+                const respuestaIndex = parseInt(respuestaSeleccionadaActual.dataset.index);
+
+                pregunta.respuestaUsuario = respuestaIndex;
+                pregunta.comprobada = true;
+                pregunta.esCorrecta = (respuestaIndex === pregunta.correct);
+
+                if (pregunta.esCorrecta) {
+                    estado.respuestasCorrectas++;
+                } else {
+                    estado.respuestasIncorrectas++;
+                }
+
+                marcarRespuesta(preguntaActual);
+                actualizarResumen();
+
+                botonesOpciones.forEach(boton => boton.disabled = true);
+                DOM.comprobarBtn.classList.add('hidden');
+            }
+
+            function actualizarEstadoBotones() {
+                const { preguntaActual, totalPreguntas } = estado;
+                const esUltimaPregunta = preguntaActual === totalPreguntas - 1;
+                DOM.siguienteBtn.textContent = esUltimaPregunta ? 'Terminar' : 'Siguiente';
+            }
+
+            function siguientePregunta() {
+                const { preguntaActual, totalPreguntas } = estado;
+                if (preguntaActual < totalPreguntas - 1) {
+                    estado.preguntaActual++;
+                    mostrarPregunta();
+                } else {
+                    mostrarResultados();
+                }
+            }
+
+            function volverPregunta() {
+                const { preguntaActual } = estado;
+                if (preguntaActual > 0) {
+                    estado.preguntaActual--;
+                    mostrarPregunta();
+                }
+            }
+
+            function mostrarResultados() {
+                const { respuestasCorrectas, respuestasIncorrectas } = estado;
+                DOM.contenidoPregunta.classList.add('hidden');
+                DOM.resultadosFinales.classList.remove('hidden');
+
+                const correctasSpan = `<span class="resultados-finales-correctas">Correctas: ${respuestasCorrectas}</span>`;
+                const incorrectasSpan = `<span class="resultados-finales-incorrectas">Incorrectas: ${respuestasIncorrectas}</span>`;
+                DOM.resultadosTexto.innerHTML = `${correctasSpan} | ${incorrectasSpan}`;
+
+                DOM.finalizarBtn.textContent = 'Volver al Test';
+                DOM.rectanguloResumen.style.marginTop = '20px';
+            }
+
+            function crearIndices() {
+                DOM.indicesContenedor.innerHTML = Array.from(
+                    {length: estado.totalPreguntas},
+                    (_, i) => `<div class="indice-pregunta" data-index="${i}">${i + 246}</div>`
+                ).join('');
+                indicesPreguntas = DOM.indicesContenedor.querySelectorAll('.indice-pregunta');
+            }
+
+            function manejarClickIndice(event) {
+                const indice = event.target.closest('.indice-pregunta');
+                if (indice) {
+                    estado.preguntaActual = parseInt(indice.dataset.index);
+                    mostrarPregunta();
+                }
+            }
+
+            function actualizarResumen() {
+                indicesPreguntas.forEach((indice, index) => {
+                    toggleClasses(indice, null, ['correcta', 'incorrecta']);
+                    const pregunta = preguntas[index];
+                    if (pregunta.comprobada) {
+                        toggleClasses(indice, pregunta.esCorrecta ? 'correcta' : 'incorrecta');
+                    }
+                });
+            }
+
+            function cacheElements() {
+                return {
+                    preguntaTexto: document.getElementById('pregunta-texto'),
+                    opcionesContenedor: document.getElementById('opciones-contenedor'),
+                    siguienteBtn: document.getElementById('siguiente-btn'),
+                    comprobarBtn: document.getElementById('comprobar-btn'),
+                    indicesContenedor: document.getElementById('indices-contenedor'),
+                    contenedorTest: document.querySelector('section.contenedor-test'),
+                    rectanguloResumen: document.querySelector('footer.rectangulo-resumen'),
+                    modalOverlay: document.getElementById('custom-modal-overlay'),
+                    modalMessage: document.getElementById('custom-modal-message'),
+                    modalOkBtn: document.getElementById('custom-modal-ok'),
+                    contenidoPregunta: document.getElementById('contenido-pregunta'),
+                    resultadosFinales: document.getElementById('resultados-finales'),
+                    resultadosTexto: document.getElementById('resultados-texto'),
+                    finalizarBtn: document.getElementById('finalizar-btn')
+                };
+            }
+
+            function initData() {
+                preguntas = preguntas.map(p => ({
+                    ...p,
+                    respuestaUsuario: null,
+                    comprobada: false,
+                    esCorrecta: false
+                }));
+
+                const fragmentoOpciones = document.createDocumentFragment();
+                for (let i = 0; i < 4; i++) {
+                    const boton = document.createElement('button');
+                    boton.className = 'opcion';
+                    boton.dataset.index = i;
+                    fragmentoOpciones.appendChild(boton);
+                }
+                DOM.opcionesContenedor.appendChild(fragmentoOpciones);
+
+                botonesOpciones = Array.from(DOM.opcionesContenedor.querySelectorAll('.opcion'));
+
+                crearIndices();
+            }
+
+            function setupEvents() {
+                DOM.contenedorTest.addEventListener('click', (event) => {
+                    const target = event.target;
+                    if (target.id === 'siguiente-btn') {
+                        siguientePregunta();
+                    } else if (target.id === 'volver-btn') {
+                        volverPregunta();
+                    } else if (target.id === 'comprobar-btn') {
+                        comprobarRespuesta();
+                    } else if (target.classList.contains('opcion')) {
+                        manejarSeleccion(event);
+                    }
+                });
+
+                DOM.rectanguloResumen.addEventListener('click', (event) => {
+                    const target = event.target;
+                    if (target.id === 'finalizar-btn') {
+                        toggleFinalizarTest();
+                    } else if (target.classList.contains('indice-pregunta')) {
+                        manejarClickIndice(event);
+                    }
+                });
+
+                DOM.modalOkBtn.addEventListener('click', ocultarModal);
+            }
+
+            function init() {
+                DOM = cacheElements();
+                initData();
+                setupEvents();
+                mostrarPregunta();
+            }
+
+            init();
+        });
+    </script>
+</body>
+</html>

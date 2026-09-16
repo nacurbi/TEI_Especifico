@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OPE 23-24-25 Osakidetza – Batería Común · Preguntas 41-60</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #F0F0F0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        .contenedor-principal {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+            padding: 20px;
+            z-index: 1;
+        }
+
+        section.contenedor-test, footer.rectangulo-resumen {
+            background-color: white;
+            padding: 20px;
+            border-radius: 2px;
+            width: 800px;
+            max-width: 800px;
+            text-align: center;
+        }
+
+        section.contenedor-test {
+            border: 1px solid #2b2a7f;
+        }
+
+        .titulo-test {
+            font-size: 24px;
+            font-weight: bold;
+            color: #6c757d;
+            margin: 0 0 8px 0;
+            text-align: center;
+        }
+        .subtitulo-test {
+            font-size: 14px;
+            color: #6c757d;
+            margin: 0 0 20px 0;
+            text-align: center;
+        }
+
+        .pregunta {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #333;
+            text-align: left;
+        }
+        .opciones-contenedor {
+            display: grid;
+            gap: 3px;
+            margin-bottom: 25px;
+        }
+        .opcion {
+            background-color: white;
+            border: none;
+            color: #495057;
+            padding: 15px;
+            border-radius: 2px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.2s, border-color 0.2s;
+            text-align: left;
+        }
+        .opcion:hover {
+            background-color: #dee2e6;
+        }
+        .opcion.seleccionada {
+            background-color: #cce5ff;
+            border-color: #2b2a7f;
+            color: #004085;
+        }
+        .opcion.correcta {
+            background-color: #85d192;
+            border-color: #85d192;
+            color: #155724;
+            cursor: default;
+        }
+        .opcion.incorrecta {
+            background-color: #f0a1a8;
+            border-color: #f0a1a8;
+            color: #721c24;
+            cursor: default;
+        }
+        .opcion.correcta:hover, .opcion.incorrecta:hover {
+            background-color: #85d192;
+            color: #155724;
+            border-color: #85d192;
+        }
+        .opcion.incorrecta:hover {
+            background-color: #f0a1a8;
+            color: #721c24;
+            border-color: #f0a1a8;
+        }
+        .navegacion-btn-contenedor {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        .comprobar-btn, #finalizar-btn {
+            background-color: #cce5ff;
+            color: #004085;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 2px;
+            font-size: 12px;
+            width: 100px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .comprobar-btn:hover, #finalizar-btn:hover {
+            background-color: #b3d7ff;
+        }
+        .hidden {
+            display: none;
+        }
+
+        .navegacion-btn {
+            background-color: #E0E0E0;
+            color: #555;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 2px;
+            font-size: 12px;
+            width: 100px;
+            cursor: pointer;
+            transition: background-color 0.2s, color 0.2s;
+        }
+        .navegacion-btn:hover {
+            background-color: #CFCFCF;
+        }
+        .navegacion-btn:disabled {
+            background-color: #f1f1f1;
+            color: #aaa;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+        footer.rectangulo-resumen {
+            background-color: #F0F0F0;
+            padding: 20px;
+            border-radius: 2px;
+            width: 800px;
+            margin-top: 20px;
+            overflow-y: auto;
+        }
+        .indices-contenedor {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+        .indice-pregunta {
+            width: 30px;
+            height: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            background-color: white;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            color: #495057;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        .indice-pregunta.activa {
+            background-color: #cce5ff;
+            color: #004085;
+            border: none;
+        }
+        .indice-pregunta:hover {
+            background-color: #dee2e6;
+        }
+        .indice-pregunta.correcta {
+            background-color: #85d192;
+            color: #155724;
+        }
+        .indice-pregunta.incorrecta {
+            background-color: #f0a1a8;
+            color: #495057;
+        }
+
+        .custom-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .custom-modal {
+            background-color: white;
+            padding: 30px;
+            border-radius: 2px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+        }
+
+        .custom-modal h3 {
+            margin-top: 0;
+            color: #333;
+        }
+
+        .custom-modal button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 2px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+
+        .resultados-finales-container {
+            text-align: center;
+        }
+        .resultados-finales-texto {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        .resultados-finales-correctas {
+            color: #155724;
+            font-weight: bold;
+        }
+        .resultados-finales-incorrectas {
+            color: #721c24;
+            font-weight: bold;
+        }
+        
+        @media (max-width: 800px) {
+            section.contenedor-test, footer.rectangulo-resumen {
+                width: 95%;
+                padding: 15px;
+            }
+            .opcion {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="contenedor-principal">
+        <h1 class="titulo-test">OPE 23-24-25 Osakidetza – Batería Común</h1>
+        <p class="subtitulo-test">Ley 55/2003: Estatuto Marco del Personal Estatutario. Adquisición y pérdida de la condición, retribuciones, jornadas y descansos. · Preguntas 41–60</p>
+        <section class="contenedor-test">
+            <article id="contenido-pregunta">
+                <div class="pregunta" id="pregunta-texto"></div>
+                <div class="opciones-contenedor" id="opciones-contenedor"></div>
+                <div class="navegacion-btn-contenedor">
+                    <button id="comprobar-btn" class="comprobar-btn">Comprobar</button>
+                    <button id="siguiente-btn" class="navegacion-btn">Siguiente</button>
+                </div>
+            </article>
+            <div id="resultados-finales" class="hidden resultados-finales-container">
+                <h2>Resultados Finales</h2>
+                <div id="resultados-texto" class="resultados-finales-texto"></div>
+                
+            </div>
+        </section>
+        <footer class="rectangulo-resumen" id="rectangulo-resumen">
+            <div class="indices-contenedor" id="indices-contenedor"></div>
+            <button id="finalizar-btn" class="comprobar-btn" style="width: 100%; margin-top: 20px;">Finalizar Test</button>
+        </footer>
+    </div>
+
+    <div id="custom-modal-overlay" class="custom-modal-overlay hidden">
+        <div class="custom-modal">
+            <p id="custom-modal-message"></p>
+            <button id="custom-modal-ok">Aceptar</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            let preguntas = [
+  {
+    "question": "El objeto de la Ley 55/2003, de 16 de diciembre, del Estatuto Marco del personal estatutario de los servicios de salud es: (41)",
+    "options": [
+      "a) Establecer las bases reguladoras de la relación funcionarial especial del personal estatutario de los servicios de salud que conforman el Sistema Nacional de Salud.",
+      "b) Establecer el Estatuto Marco del personal estatutario vinculado por una relación laboral especial a los servicios de salud que integran el Sistema Nacional de Salud.",
+      "c) Establecer las bases reguladoras de la relación funcionarial del personal estatutario de los servicios de salud que conforman el Sistema Nacional de Salud.",
+      "d) Ninguna de las anteriores respuestas es correcta."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "Según dispone la Ley 55/2003, de 16 de diciembre, del Estatuto Marco del personal estatutario de los servicios de salud, la ordenación del régimen personal estatutario de los servicios de salud se rige por una serie de principios y criterios. Señale cuales no están entre los mencionados por esta ley: (42)",
+    "options": [
+      "a) Sometimiento pleno a la ley y el derecho.",
+      "b) Igualdad, mérito, capacidad y promoción en el acceso a la condición de personal estatutario.",
+      "c) Integración en el régimen organizativo y funcional del servicio de salud y de sus centros e instituciones.",
+      "d) Coordinación, cooperación y mutua información entre las Administraciones sanitarias públicas."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "El personal estatutario de los servicios de salud que conforman el Sistema Nacional de Salud: (43)",
+    "options": [
+      "a) No ostenta el derecho individual a la libre sindicación.",
+      "b) Ostenta el derecho a la actividad sindical.",
+      "c) Ostenta el derecho de reunión, que podrá ejercerlo siempre que cuente con la necesaria autorización previa.",
+      "d) Todas las respuestas son correctas."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "La condición de personal estatutario fijo se adquiere, tal y como prevé la Ley 55/2003, de 16 de diciembre, del Estatuto Marco del personal estatutario de los servicios de salud, por el cumplimiento de los siguientes requisitos: (44)",
+    "options": [
+      "a) Incorporación a una plaza de servicio, institución o centro que corresponda en el plazo fijado en la convocatoria tras la superación de las pruebas de selección.",
+      "b) Superación de las pruebas de selección; nombramiento conferido por el órgano competente; e incorporación a una plaza del servicio, institución o centro que corresponda en el plazo de un mes.",
+      "c) Superación de las pruebas de selección; nombramiento conferido por el órgano competente; e incorporación, previo cumplimiento de los requisitos formales en cada caso establecidos, a una plaza del servicio, institución o centro que corresponda en el plazo determinado en la convocatoria.",
+      "d) Superación de las pruebas de selección; nombramiento conferido por el órgano competente; e incorporación a una plaza del servicio, institución o centro que corresponda en todo caso en el plazo determinado en la convocatoria."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "Según dice la Ley 55/2003, de 16 de diciembre, del Estatuto Marco del personal estatutario de los servicios de salud, en el proceso de la adquisición de la condición de personal estatutario fijo, no podrán recibir nombramiento y quedarán sin efecto las actuaciones de quienes: (45)",
+    "options": [
+      "a) No acrediten que reúnen los requisitos y condiciones exigidos en la convocatoria, una vez superado el proceso selectivo.",
+      "b) No acrediten que reúnen los requisitos y condiciones exigidos en la convocatoria, con carácter previo a la superación del proceso selectivo.",
+      "c) No acrediten que reúnen los requisitos y condiciones exigidos en la convocatoria, una vez firmada la convocatoria.",
+      "d) Una vez superado el proceso selectivo, automáticamente se procede al nombramiento por el órgano competente."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "La pérdida de la condición de personal estatutario regulada en la Ley 55/2003, de 16 de diciembre, del Estatuto Marco del personal estatutario de los servicios de salud, se produce: (46)",
+    "options": [
+      "a) Siempre en caso de pena de inhabilitación especial para empleo o cargo público, afecte o no al correspondiente nombramiento.",
+      "b) En caso de que se adopte la pena de inhabilitación absoluta sea firme o no.",
+      "c) En caso de que se adopte la pena de inhabilitación especial para la correspondiente profesión, siempre que esta exceda de seis años.",
+      "d) En caso de que se adopte la pena de inhabilitación especial para la correspondiente profesión, siempre que esta exceda de tres años."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "Conforme a la Ley 55/2003, de 16 de diciembre, del Estatuto Marco del personal estatutario de los servicios de salud, señale cuál de las siguientes afirmaciones no es correcta: (47)",
+    "options": [
+      "a) La jubilación puede ser forzosa o voluntaria.",
+      "b) Para que la persona interesada pueda prolongar su permanencia en servicio activo hasta cumplir los 70 años, bastará con que lo solicite voluntariamente.",
+      "c) La jubilación forzosa se declarará al cumplir la persona interesada 65 años.",
+      "d) Podrá optar a la jubilación voluntaria, total o parcial, el personal estatutario que reúna los requisitos establecidos en la legislación de Seguridad Social."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "Procede la extinción de la condición de personal estatutario fijo de los servicios de salud: (48)",
+    "options": [
+      "a) Cuando se produzca la pérdida de la nacionalidad.",
+      "b) En caso de recaer sanción firme disciplinaria de separación del servicio.",
+      "c) Siempre que se imponga una pena principal o accesoria de inhabilitación especial para empleo o cargo público o para el ejercicio de la correspondiente profesión.",
+      "d) Todas las anteriores respuestas son correctas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "En materia de retribuciones, la Ley 55/2003, de 16 de diciembre, del Estatuto Marco del personal estatutario de los servicios de salud, prevé que: (49)",
+    "options": [
+      "a) El sistema retributivo del personal estatutario se estructura en retribuciones básicas y retribuciones complementarias.",
+      "b) La evaluación del personal estatutario a efectos de determinación de una parte de la retribuciones complementarias se establecerá a través de procedimientos fundados en los principios igualdad, objetividad y transparencia.",
+      "c) El sistema retributivo del personal estatutario responde a los principios de cualificación técnica y profesional.",
+      "d) Todas las respuestas son correctas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "De acuerdo con la Ley 55/2003, de 16 de diciembre, del Estatuto Marco del personal estatutario de los servicios de salud, señale la respuesta correcta respecto a las retribuciones del personal estatutario de los servicios de salud: (50)",
+    "options": [
+      "a) Las retribuciones básicas son: el sueldo asignado a cada categoría en función del título exigido para su desempeño; los trienios; y las pagas extraordinarias.",
+      "b) Las retribuciones básicas serán iguales en todos los servicios de salud independientemente de la anualidad en la que se perciban.",
+      "c) El personal estatutario temporal percibirá la totalidad de las retribuciones que, en el correspondiente servicio de salud, correspondan a su nombramiento, con excepción del complemento de carrera.",
+      "d) El complemento de atención continuada está destinado a retribuir la iniciativa continuada y permanente de la persona titular del puesto."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "La pérdida de la condición de personal estatutario de los servicios de salud se produce cuando la incapacidad permanente sea declarada: (51)",
+    "options": [
+      "a) En grado de incapacidad permanente total para la profesión habitual.",
+      "b) En grado de incapacidad absoluta para todo trabajo.",
+      "c) En grado de gran invalidez.",
+      "d) Todas las respuestas son correctas."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "La Ley 55/2003, de 16 de diciembre, del Estatuto Marco del personal estatutario de los servicios de salud, establece que: (52)",
+    "options": [
+      "a) El tiempo de trabajo es el período en el que el personal permanece en el centro sanitario.",
+      "b) Solo se considera tiempo de trabajo aquel en el que el personal se encuentre dentro del centro sanitario en su puesto de trabajo y en el ejercicio de su actividad y funciones.",
+      "c) Para el cómputo del tiempo de trabajo, se puede tomar en consideración tanto el tiempo en el que se permanece en el centro sanitario como fuera de dicho centro.",
+      "d) Ninguna de las respuestas anteriores es correcta."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "En el supuesto del personal estatutario de los servicios de salud: (53)",
+    "options": [
+      "a) El período de localización es aquel período de tiempo en el que el personal se encuentra únicamente en situación de disponibilidad.",
+      "b) Se considera período de descanso todo período de tiempo que no sea tiempo de trabajo.",
+      "c) El trabajo por turnos es una forma de organización del trabajo en equipo con arreglo al ritmo rotatorio y siempre de tipo continuo.",
+      "d) El período de localización es aquel período de tiempo en el que el personal se encuentra en situación de disponibilidad a los solos efectos de asegurar su posible localización."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "Para el personal estatutario de los servicios de salud, el período nocturno tendrá la siguiente duración: (54)",
+    "options": [
+      "a) Mínima de siete horas e incluirá necesariamente el período comprendido entre las cero y las cinco horas de cada día natural.",
+      "b) Mínima de ocho horas e incluirá necesariamente el período comprendido entre las cero y las cinco horas de cada día natural.",
+      "c) Mínima de ocho horas e incluirá necesariamente el período comprendido entre las doce y las cinco horas de cada día natural.",
+      "d) Mínima de siete horas e incluirá necesariamente el período comprendido entre las doce y las cinco horas de cada día natural."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "Atendiendo a lo dispuesto en la Ley 55/2003, de 16 de diciembre, del Estatuto Marco del personal estatutario de los servicios de salud, señale la respuesta que no es correcta: (55)",
+    "options": [
+      "a) Para superarse la duración máxima conjunta de la jornada ordinaria y la jornada complementaria, será suficiente con justificar por parte del centro sanitario que existen razones organizativas o asistenciales que así lo justifiquen.",
+      "b) Podrá superarse la duración máxima conjunta de la jornada ordinaria y de la jornada complementaria cuando el personal lo consienta y siempre que existan razones organizativas o asistenciales que así lo justifiquen en aras a garantizar la adecuada atención continuada y permanente",
+      "c) Podrá superarse la duración máxima conjunta de la jornada ordinaria y de la jornada complementaria siempre previa oferta expresa del centro sanitario.",
+      "d) Los excesos de jornada tendrán el carácter de jornada complementaria y un límite máximo de 150 horas anuales."
+    ],
+    "correct": 0
+  },
+  {
+    "question": "Respecto a la jornada y descansos diarios del personal estatutario de los servicios de salud, es correcta la siguiente afirmación: (56)",
+    "options": [
+      "a) El tiempo de trabajo correspondiente a la jornada ordinaria será siempre de 12 horas ininterrumpidas.",
+      "b) El personal tiene derecho a un período mínimo de descanso ininterrumpido de 8 horas entre el fin de una jornada y el comienzo de la siguiente.",
+      "c) Se podrán establecer jornadas ordinarias de hasta 24 horas con carácter excepcional y cuando así lo aconsejen razones organizativas o asistenciales.",
+      "d) El descanso ininterrumpido de 12 horas entre el fin de una jornada y el comienzo de la siguiente solo podrá reducirse en el caso de trabajo a turnos, cuando el personal cambie de equipo y no pueda disfrutar del período de descanso diario entre el final de la jornada de un equipo y el comienzo de la jornada del siguiente."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "Según establece la Ley 55/2003, de 16 de diciembre, del Estatuto Marco del personal estatutario de los servicios de salud: (57)",
+    "options": [
+      "a) Resulta incompatible para el personal estatutario de los servicios de salud el ejercicio de las funciones sanitarias con cualquier otro tipo de funciones.",
+      "b) Al personal estatutario de los servicios de salud le resulta aplicable el mismo régimen de incompatibilidades establecido para el personal funcionario.",
+      "c) Atendiendo a lo que establezca la legislación vigente, el personal estatutario de los servicios de salud podrá compatibilizar las funciones sanitarias y docente.",
+      "d) Para el personal licenciado sanitario el complemento específico resulta irrenunciable."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "La Ley 55/2003, de 16 de diciembre, del Estatuto Marco del personal estatutario de los servicios de salud regula el descanso semanal. Señale la respuesta que no es correcta: (58) -IMPUGNABLE-",
+    "options": [
+      "a) El personal tendrá derecho a un período mínimo que siempre será fijo de descanso ininterrumpido con una duración media de 24 horas semanales.",
+      "b) El período de referencia para el cálculo del período de descanso semanal será de tres meses.",
+      "c) En el caso de que no se hubiera disfrutado del tiempo mínimo de descanso semanal en el período de tres meses se producirá una compensación a través del régimen de descansos alternativos.",
+      "d) El período de referencia para el cálculo del período de descanso semanal será de dos meses."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "Conforme a la Ley 55/2003, de 16 de diciembre, del Estatuto Marco del personal estatutario de los servicios de salud: (59)",
+    "options": [
+      "a) El personal tendrá derecho a una vacación retribuida cuya duración no será inferior en ningún caso a 30 días naturales.",
+      "b) El personal estatutario de los servicios de salud podrá elegir sustituir el período de vacación por una compensación económica.",
+      "c) Solo podrá ser sustituido por una compensación económica el período vacacional anual mediante la programación funcional de los centros, cuando así lo aconsejen razones organizativas.",
+      "d) Anualmente, el personal tendrá derecho a una vacación retribuida cuya duración no será inferior a 30 días naturales, o al tiempo que proporcionalmente corresponda en función del tiempo de servicios."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "La excedencia voluntaria solicitada por el personal estatutario de los servicios de salud por interés particular exige haber prestado servicios efectivos en cualquiera de las Administraciones públicas durante: (60)",
+    "options": [
+      "a) Los cinco años inmediatamente anteriores.",
+      "b) Los cuatro años inmediatamente anteriores.",
+      "c) Los dos años inmediatamente anteriores.",
+      "d) Los tres años inmediatamente anteriores."
+    ],
+    "correct": 0
+  }
+];
+            let DOM = {};
+
+            const estado = {
+                preguntaActual: 0,
+                respuestasCorrectas: 0,
+                respuestasIncorrectas: 0,
+                totalPreguntas: preguntas.length
+            };
+
+            let botonesOpciones;
+            let indicesPreguntas;
+
+            function shuffleArray(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+            }
+
+            function toggleClasses(element, addClass, removeClasses) {
+                if (removeClasses && removeClasses.length > 0) {
+                    removeClasses.forEach(cls => element.classList.remove(cls));
+                }
+                if (addClass) {
+                    element.classList.add(addClass);
+                }
+            }
+
+            function mostrarModal(message) {
+                DOM.modalMessage.textContent = message;
+                DOM.modalOverlay.classList.remove('hidden');
+            }
+
+            function ocultarModal() {
+                DOM.modalOverlay.classList.add('hidden');
+            }
+
+            function marcarRespuesta(index) {
+                const pregunta = preguntas[index];
+
+                const botonCorrecto = botonesOpciones[pregunta.correct];
+                const indiceCorrecto = indicesPreguntas[index];
+
+                toggleClasses(indiceCorrecto, null, ['correcta', 'incorrecta']);
+
+                if (pregunta.respuestaUsuario !== null) {
+                    toggleClasses(botonCorrecto, 'correcta');
+
+                    if (pregunta.esCorrecta) {
+                        toggleClasses(indiceCorrecto, 'correcta');
+                    } else {
+                        const botonSeleccionado = botonesOpciones[pregunta.respuestaUsuario];
+                        toggleClasses(botonSeleccionado, 'incorrecta');
+                        toggleClasses(indiceCorrecto, 'incorrecta');
+                    }
+                }
+            }
+
+            function mostrarPregunta() {
+                const { preguntaActual, totalPreguntas } = estado;
+                DOM.resultadosFinales.classList.add('hidden');
+                DOM.contenidoPregunta.classList.remove('hidden');
+                DOM.rectanguloResumen.classList.remove('hidden');
+                DOM.finalizarBtn.textContent = 'Finalizar Test';
+
+                const pregunta = preguntas[preguntaActual];
+                const cleanedQuestion = pregunta.question.replace(/^\s*(\d+\.\s*)+/, '');
+                DOM.preguntaTexto.textContent = `${preguntaActual + 1}. ${cleanedQuestion}`;
+
+                botonesOpciones.forEach((boton, index) => {
+                    toggleClasses(boton, null, ['seleccionada', 'correcta', 'incorrecta']);
+                    boton.textContent = pregunta.options[index];
+                    boton.disabled = pregunta.comprobada;
+                });
+
+                if (pregunta.respuestaUsuario !== null) {
+                    toggleClasses(botonesOpciones[pregunta.respuestaUsuario], 'seleccionada');
+                    if (pregunta.comprobada) {
+                        marcarRespuesta(preguntaActual);
+                    }
+                }
+
+                if (indicesPreguntas) {
+                    indicesPreguntas.forEach(indice => indice.classList.remove('activa'));
+                    indicesPreguntas[preguntaActual].classList.add('activa');
+                }
+
+                DOM.comprobarBtn.classList.toggle('hidden', pregunta.comprobada);
+                actualizarEstadoBotones();
+            }
+
+            function manejarSeleccion(event) {
+                const boton = event.target.closest('.opcion');
+                if (boton) {
+                    const pregunta = preguntas[estado.preguntaActual];
+                    if (!pregunta.comprobada) {
+                        botonesOpciones.forEach(b => toggleClasses(b, null, ['seleccionada']));
+                        toggleClasses(boton, 'seleccionada');
+                    }
+                }
+            }
+
+            function comprobarRespuesta() {
+                const respuestaSeleccionadaActual = DOM.opcionesContenedor.querySelector('.opcion.seleccionada');
+                if (!respuestaSeleccionadaActual) {
+                    mostrarModal('Por favor, selecciona una respuesta antes de comprobar.');
+                    return;
+                }
+                const { preguntaActual } = estado;
+                const pregunta = preguntas[preguntaActual];
+                const respuestaIndex = parseInt(respuestaSeleccionadaActual.dataset.index);
+
+                pregunta.respuestaUsuario = respuestaIndex;
+                pregunta.comprobada = true;
+                pregunta.esCorrecta = (respuestaIndex === pregunta.correct);
+
+                if (pregunta.esCorrecta) {
+                    estado.respuestasCorrectas++;
+                } else {
+                    estado.respuestasIncorrectas++;
+                }
+
+                marcarRespuesta(preguntaActual);
+                actualizarResumen();
+
+                botonesOpciones.forEach(boton => boton.disabled = true);
+                DOM.comprobarBtn.classList.add('hidden');
+            }
+
+            function actualizarEstadoBotones() {
+                const { preguntaActual, totalPreguntas } = estado;
+                const esUltimaPregunta = preguntaActual === totalPreguntas - 1;
+                DOM.siguienteBtn.textContent = esUltimaPregunta ? 'Terminar' : 'Siguiente';
+            }
+
+            function siguientePregunta() {
+                const { preguntaActual, totalPreguntas } = estado;
+                if (preguntaActual < totalPreguntas - 1) {
+                    estado.preguntaActual++;
+                    mostrarPregunta();
+                } else {
+                    mostrarResultados();
+                }
+            }
+
+            function volverPregunta() {
+                const { preguntaActual } = estado;
+                if (preguntaActual > 0) {
+                    estado.preguntaActual--;
+                    mostrarPregunta();
+                }
+            }
+
+            function mostrarResultados() {
+                const { respuestasCorrectas, respuestasIncorrectas } = estado;
+                DOM.contenidoPregunta.classList.add('hidden');
+                DOM.resultadosFinales.classList.remove('hidden');
+
+                const correctasSpan = `<span class="resultados-finales-correctas">Correctas: ${respuestasCorrectas}</span>`;
+                const incorrectasSpan = `<span class="resultados-finales-incorrectas">Incorrectas: ${respuestasIncorrectas}</span>`;
+                DOM.resultadosTexto.innerHTML = `${correctasSpan} | ${incorrectasSpan}`;
+
+                DOM.finalizarBtn.textContent = 'Volver al Test';
+                DOM.rectanguloResumen.style.marginTop = '20px';
+            }
+
+            function crearIndices() {
+                DOM.indicesContenedor.innerHTML = Array.from(
+                    {length: estado.totalPreguntas},
+                    (_, i) => `<div class="indice-pregunta" data-index="${i}">${i+1}</div>`
+                ).join('');
+                indicesPreguntas = DOM.indicesContenedor.querySelectorAll('.indice-pregunta');
+            }
+
+            function manejarClickIndice(event) {
+                const indice = event.target.closest('.indice-pregunta');
+                if (indice) {
+                    estado.preguntaActual = parseInt(indice.dataset.index);
+                    mostrarPregunta();
+                }
+            }
+
+            function actualizarResumen() {
+                indicesPreguntas.forEach((indice, index) => {
+                    toggleClasses(indice, null, ['correcta', 'incorrecta']);
+                    const pregunta = preguntas[index];
+                    if (pregunta.comprobada) {
+                        if (pregunta.esCorrecta) {
+                            toggleClasses(indice, 'correcta');
+                        } else {
+                            toggleClasses(indice, 'incorrecta');
+                        }
+                    }
+                });
+            }
+
+            function toggleFinalizarTest() {
+                if (DOM.resultadosFinales.classList.contains('hidden')) {
+                    mostrarResultados();
+                } else {
+                    mostrarPregunta();
+                }
+            }
+            
+
+            function cacheElements() {
+                return {
+                    preguntaTexto: document.getElementById('pregunta-texto'),
+                    opcionesContenedor: document.getElementById('opciones-contenedor'),
+                    siguienteBtn: document.getElementById('siguiente-btn'),
+                    comprobarBtn: document.getElementById('comprobar-btn'),
+                    indicesContenedor: document.getElementById('indices-contenedor'),
+                    contenedorTest: document.querySelector('section.contenedor-test'),
+                    rectanguloResumen: document.querySelector('footer.rectangulo-resumen'),
+                    modalOverlay: document.getElementById('custom-modal-overlay'),
+                    modalMessage: document.getElementById('custom-modal-message'),
+                    modalOkBtn: document.getElementById('custom-modal-ok'),
+                    contenidoPregunta: document.getElementById('contenido-pregunta'),
+                    resultadosFinales: document.getElementById('resultados-finales'),
+                    resultadosTexto: document.getElementById('resultados-texto'),
+                    finalizarBtn: document.getElementById('finalizar-btn')
+                };
+            }
+
+            function initData() {
+                preguntas = preguntas.map(p => ({
+                    ...p,
+                    respuestaUsuario: null,
+                    comprobada: false,
+                    esCorrecta: false
+                }));
+
+                const fragmentoOpciones = document.createDocumentFragment();
+                for (let i = 0; i < 4; i++) {
+                    const boton = document.createElement('button');
+                    boton.className = 'opcion';
+                    boton.dataset.index = i;
+                    fragmentoOpciones.appendChild(boton);
+                }
+                DOM.opcionesContenedor.appendChild(fragmentoOpciones);
+
+                botonesOpciones = Array.from(DOM.opcionesContenedor.querySelectorAll('.opcion'));
+
+                crearIndices();
+            }
+
+            function setupEvents() {
+                DOM.contenedorTest.addEventListener('click', (event) => {
+                    const target = event.target;
+                    if (target.id === 'siguiente-btn') {
+                        siguientePregunta();
+                    } else if (target.id === 'volver-btn') {
+                        volverPregunta();
+                    } else if (target.id === 'comprobar-btn') {
+                        comprobarRespuesta();
+                    } else if (target.classList.contains('opcion')) {
+                        manejarSeleccion(event);
+                    }
+                });
+
+                DOM.rectanguloResumen.addEventListener('click', (event) => {
+                    const target = event.target;
+                    if (target.id === 'finalizar-btn') {
+                        toggleFinalizarTest();
+                    } else if (target.classList.contains('indice-pregunta')) {
+                        manejarClickIndice(event);
+                    }
+                });
+
+                DOM.modalOkBtn.addEventListener('click', ocultarModal);
+                
+            }
+
+            function init() {
+                DOM = cacheElements();
+                initData();
+                setupEvents();
+                mostrarPregunta();
+            }
+
+            init();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OPE 23-24-25 Osakidetza Técnico/a Informática</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #F0F0F0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        .contenedor-principal {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+            padding: 20px;
+            z-index: 1;
+        }
+
+        section.contenedor-test, footer.rectangulo-resumen {
+            background-color: white;
+            padding: 20px;
+            border-radius: 2px;
+            width: 800px;
+            max-width: 800px;
+            text-align: center;
+        }
+
+        section.contenedor-test {
+            border: 1px solid #2b2a7f;
+        }
+
+        .titulo-test {
+            font-size: 24px;
+            font-weight: bold;
+            color: #6c757d;
+            margin: 0 0 8px 0;
+            text-align: center;
+        }
+        .subtitulo-test {
+            font-size: 14px;
+            color: #6c757d;
+            margin: 0 0 20px 0;
+            text-align: center;
+        }
+
+        .pregunta {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #333;
+            text-align: left;
+        }
+        .opciones-contenedor {
+            display: grid;
+            gap: 3px;
+            margin-bottom: 25px;
+        }
+        .opcion {
+            background-color: white;
+            border: none;
+            color: #495057;
+            padding: 15px;
+            border-radius: 2px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.2s, border-color 0.2s;
+            text-align: left;
+        }
+        .opcion:hover {
+            background-color: #dee2e6;
+        }
+        .opcion.seleccionada {
+            background-color: #cce5ff;
+            border-color: #2b2a7f;
+            color: #004085;
+        }
+        .opcion.correcta {
+            background-color: #85d192;
+            border-color: #85d192;
+            color: #155724;
+            cursor: default;
+        }
+        .opcion.incorrecta {
+            background-color: #f0a1a8;
+            border-color: #f0a1a8;
+            color: #721c24;
+            cursor: default;
+        }
+        .opcion.correcta:hover, .opcion.incorrecta:hover {
+            background-color: #85d192;
+            color: #155724;
+            border-color: #85d192;
+        }
+        .opcion.incorrecta:hover {
+            background-color: #f0a1a8;
+            color: #721c24;
+            border-color: #f0a1a8;
+        }
+        .navegacion-btn-contenedor {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        .comprobar-btn, #finalizar-btn {
+            background-color: #cce5ff;
+            color: #004085;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 2px;
+            font-size: 12px;
+            width: 100px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .comprobar-btn:hover, #finalizar-btn:hover {
+            background-color: #b3d7ff;
+        }
+        .hidden {
+            display: none;
+        }
+
+        .navegacion-btn {
+            background-color: #E0E0E0;
+            color: #555;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 2px;
+            font-size: 12px;
+            width: 100px;
+            cursor: pointer;
+            transition: background-color 0.2s, color 0.2s;
+        }
+        .navegacion-btn:hover {
+            background-color: #CFCFCF;
+        }
+        .navegacion-btn:disabled {
+            background-color: #f1f1f1;
+            color: #aaa;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+        footer.rectangulo-resumen {
+            background-color: #F0F0F0;
+            padding: 20px;
+            border-radius: 2px;
+            width: 800px;
+            margin-top: 20px;
+            overflow-y: auto;
+        }
+        .indices-contenedor {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+        .indice-pregunta {
+            width: 30px;
+            height: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            background-color: white;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            color: #495057;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        .indice-pregunta.activa {
+            background-color: #cce5ff;
+            color: #004085;
+            border: none;
+        }
+        .indice-pregunta:hover {
+            background-color: #dee2e6;
+        }
+        .indice-pregunta.correcta {
+            background-color: #85d192;
+            color: #155724;
+        }
+        .indice-pregunta.incorrecta {
+            background-color: #f0a1a8;
+            color: #495057;
+        }
+
+        .custom-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .custom-modal {
+            background-color: white;
+            padding: 30px;
+            border-radius: 2px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+        }
+
+        .custom-modal h3 {
+            margin-top: 0;
+            color: #333;
+        }
+
+        .custom-modal button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 2px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+
+        .resultados-finales-container {
+            text-align: center;
+        }
+        .resultados-finales-texto {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        .resultados-finales-correctas {
+            color: #155724;
+            font-weight: bold;
+        }
+        .resultados-finales-incorrectas {
+            color: #721c24;
+            font-weight: bold;
+        }
+        
+        @media (max-width: 800px) {
+            section.contenedor-test, footer.rectangulo-resumen {
+                width: 95%;
+                padding: 15px;
+            }
+            .opcion {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="contenedor-principal">
+        <h1 class="titulo-test">OPE 23-24-25 Osakidetza Técnico/a Informática</h1>
+        <p class="subtitulo-test">Firma digital: Ley 6/2020 de servicios electrónicos de confianza.</p>
+        <section class="contenedor-test">
+            <article id="contenido-pregunta">
+                <div class="pregunta" id="pregunta-texto"></div>
+                <div class="opciones-contenedor" id="opciones-contenedor"></div>
+                <div class="navegacion-btn-contenedor">
+                    <button id="comprobar-btn" class="comprobar-btn">Comprobar</button>
+                    <button id="siguiente-btn" class="navegacion-btn">Siguiente</button>
+                </div>
+            </article>
+            <div id="resultados-finales" class="hidden resultados-finales-container">
+                <h2>Resultados Finales</h2>
+                <div id="resultados-texto" class="resultados-finales-texto"></div>
+                
+            </div>
+        </section>
+        <footer class="rectangulo-resumen" id="rectangulo-resumen">
+            <div class="indices-contenedor" id="indices-contenedor"></div>
+            <button id="finalizar-btn" class="comprobar-btn" style="width: 100%; margin-top: 20px;">Finalizar Test</button>
+        </footer>
+    </div>
+
+    <div id="custom-modal-overlay" class="custom-modal-overlay hidden">
+        <div class="custom-modal">
+            <p id="custom-modal-message"></p>
+            <button id="custom-modal-ok">Aceptar</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            let preguntas = [
+  {
+    "numero": 164,
+    "question": "¿Cuál es el objeto de la Ley 6/2020?",
+    "options": [
+      "a) Adaptar el ordenamiento jurídico español al Reglamento (UE) 2016/679 del Parlamento Europeo y el Consejo.",
+      "b) Garantizar los derechos digitales de la ciudadanía conforme al mandato establecido en el artículo 18.4 de la Constitución.",
+      "c) Regular determinados aspectos de los servicios electrónicos de confianza.",
+      "d) El derecho fundamental de las personas físicas a la protección de datos personales amparado por el artículo 18.4 de la Constitución."
+    ],
+    "correct": 2
+  },
+  {
+    "numero": 165,
+    "question": "¿A qué personas prestadoras establecidas fuera de España les resulta de aplicación la Ley 6/2020?",
+    "options": [
+      "a) A todas las personas prestadoras residentes o domiciliadas en otro Estado que operen en España, independientemente de su supervisión.",
+      "b) A las personas prestadoras residentes o domiciliadas en otro Estado con establecimiento permanente en España, siempre que sus servicios no estén supervisados por la autoridad competente de otro país de la UE.",
+      "c) A las personas prestadoras residentes o domiciliadas en otro Estado con establecimiento permanente en España, siempre que sus servicios estén supervisados por la autoridad competente de otro país de la UE.",
+      "d) A las personas prestadoras públicas y privadas de servicios electrónicos de confianza establecidos en España."
+    ],
+    "correct": 1
+  },
+  {
+    "numero": 166,
+    "question": "Según la Ley 6/2020, ¿qué valor y eficacia jurídica tienen los documentos electrónicos?",
+    "options": [
+      "a) Los documentos electrónicos públicos, administrativos y privados, tienen el valor y la eficacia jurídica que corresponda a su respectiva naturaleza, de conformidad con la legislación que les resulte aplicable.",
+      "b) Los documentos electrónicos públicos y administrativos, tienen el valor y la eficacia jurídica que se le otorgue en el ordenamiento jurídico español del Reglamento (UE) 2016/679.",
+      "c) Los documentos electrónicos públicos y privados, tienen el valor y la eficacia jurídica que corresponda a su copia no cualificada según el artículo 3 y la disposición segunda del Reglamento.",
+      "d) Los documentos electrónicos públicos y privados, tienen el valor y la eficacia jurídica que se le otorgue en el ordenamiento jurídico español del Reglamento (UE) 2016/679."
+    ],
+    "correct": 0
+  },
+  {
+    "numero": 167,
+    "question": "Conforme a la Ley 6/2020, ¿cuál es el período máximo de vigencia de un certificado electrónico cualificado?",
+    "options": [
+      "a) 2 años.",
+      "b) 4 años.",
+      "c) 5 años.",
+      "d) 6 años."
+    ],
+    "correct": 2
+  },
+  {
+    "numero": 168,
+    "question": "De acuerdo con la Ley 6/2020, ¿qué ocurre si se viola o pone en peligro el secreto de los datos de creación de firma o de sello?",
+    "options": [
+      "a) Que se le pondrá una multa a la persona responsable de haber puesto en peligro dichos datos.",
+      "b) Que se renovará el certificado electrónico con otro firmante.",
+      "c) Que se modificará la identidad de la persona titular del certificado electrónico.",
+      "d) Que se revocará el certificado electrónico."
+    ],
+    "correct": 3
+  },
+  {
+    "numero": 169,
+    "question": "Con arreglo a la Ley 6/2020, ¿qué información debe incluir la persona prestadora de servicios electrónicos de confianza en la comunicación a la persona titular cuando revoca o suspende un certificado electrónico?",
+    "options": [
+      "a) Únicamente la fecha en la que el certificado quedará sin efecto, sin necesidad de justificación adicional.",
+      "b) Los motivos, la fecha y la hora en los que el certificado quedará sin efecto.",
+      "c) El procedimiento para recurrir la revocación y el plazo máximo para hacerlo.",
+      "d) La identidad de la autoridad competente que ha ordenado la revocación o suspensión."
+    ],
+    "correct": 1
+  },
+  {
+    "numero": 170,
+    "question": "En el supuesto de certificados cualificados de firma electrónica expedidos a personas físicas, ¿cómo se consigna la identidad del titular según lo previsto en la Ley 6/2020?",
+    "options": [
+      "a) Por su nombre y apellidos y su número de Documento Nacional de Identidad, número de identidad de extranjero o número de identificación fiscal, o a través de un pseudónimo que conste como tal de manera inequívoca.",
+      "b) Por su nombre y apellidos junto con su dirección postal y fecha de nacimiento y/o mediante un pseudónimo.",
+      "c) Por su denominación o razón social y su número de identificación fiscal.",
+      "d) Por su Documento Nacional de Identidad, número de identidad de extranjero o número de identificación fiscal, o denominación o razón social y su número de identificación fiscal."
+    ],
+    "correct": 0
+  },
+  {
+    "numero": 171,
+    "question": "¿En qué caso puede prescindirse de la personación física ante las personas encargadas de verificar la identidad de un solicitante de un certificado cualificado con arreglo a la Ley 6/2020?",
+    "options": [
+      "a) Cuando la persona solicitante aporte una copia compulsada de su Documento Nacional de Identidad junto con una declaración responsable.",
+      "b) Cuando la firma de la persona solicitante en la solicitud de expedición del certificado cualificado haya sido legitimada en presencia notarial.",
+      "c) Cuando la persona solicitante haya obtenido previamente otro certificado cualificado en vigor expedido por el mismo prestador.",
+      "d) Cuando un representante legal acuda en su nombre con el certificado cualificado compulsado por el departamento competente."
+    ],
+    "correct": 1
+  },
+  {
+    "numero": 172,
+    "question": "Según la Ley 6/2020, ¿puede utilizarse la videoconferencia como método de identificación para solicitar un certificado cualificado y, en caso afirmativo, bajo qué condición?",
+    "options": [
+      "a) No, la videoconferencia nunca está permitida ya que la identificación a distancia no garantiza la fiabilidad exigida para los certificados cualificados.",
+      "b) Sí, pero únicamente cuando la persona solicitante resida en el extranjero y no pueda desplazarse a territorio español y se haga en la Embajada Española correspondiente al país en el que reside.",
+      "c) No, únicamente se admite la personación física o la legitimación notarial de la firma, sin que se pueda usar ningún método de identificación a distancia.",
+      "d) Sí, siempre que aporte una seguridad equivalente en términos de fiabilidad a la presencia física, según evaluación de un organismo de evaluación de la conformidad, y bajo las condiciones técnicas fijadas por Orden Ministerial."
+    ],
+    "correct": 3
+  },
+  {
+    "numero": 173,
+    "question": "Con arreglo a la Ley 6/2020, ¿qué obligación tienen los prestadores de servicios electrónicos de confianza cuando consignan un pseudónimo en un certificado electrónico?",
+    "options": [
+      "a) Comunicar el pseudónimo utilizado a la autoridad competente para su registro y validación previa.",
+      "b) Garantizar que el pseudónimo no coincida con el de ningún otro certificado expedido por el mismo prestador.",
+      "c) Constatar la verdadera identidad del titular del certificado y conservar la documentación que la acredite.",
+      "d) No es posible usar pseudónimo en este tipo de certificados electrónicos."
+    ],
+    "correct": 2
+  },
+  {
+    "numero": 174,
+    "question": "Según lo previsto en la Ley 6/2020, ¿cuál es el importe mínimo del seguro de responsabilidad civil que deben constituir los prestadores cualificados de servicios electrónicos de confianza?",
+    "options": [
+      "a) 1.000.000 de euros, incrementándose en 250.000 euros por cada servicio cualificado adicional que se preste.",
+      "b) 1.500.000 euros, salvo para los prestadores del sector público, añadiéndose 500.000 euros más por cada tipo de servicio cualificado adicional.",
+      "c) 1.500.000 euros para cualquier prestador, pudiéndose reducir 500.000 euros si se presta un único servicio cualificado en el sector privado.",
+      "d) 2.000.000 de euros como importe base, con independencia del número de servicios cualificados que se presten."
+    ],
+    "correct": 1
+  },
+  {
+    "numero": 175,
+    "question": "En virtud de la Ley 6/2020, ¿qué tipo de infracción comete un prestador que no adopta medidas suficientes para resolver incidentes de seguridad en sus productos, redes y sistemas de información?",
+    "options": [
+      "a) Infracción muy grave, si no se resuelve en el plazo de cinco días desde que se produjeron.",
+      "b) Infracción grave, si no se resuelve en el plazo de veinte días desde que se produjeron.",
+      "c) Infracción grave, si no se resuelve en el plazo de diez días desde que se produjeron.",
+      "d) Infracción leve, si no se resuelve en el plazo de diez días desde que se produjeron."
+    ],
+    "correct": 2
+  }
+];
+            let DOM = {};
+
+            const estado = {
+                preguntaActual: 0,
+                respuestasCorrectas: 0,
+                respuestasIncorrectas: 0,
+                totalPreguntas: preguntas.length
+            };
+
+            let botonesOpciones;
+            let indicesPreguntas;
+
+            function shuffleArray(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+            }
+
+            function toggleClasses(element, addClass, removeClasses) {
+                if (removeClasses && removeClasses.length > 0) {
+                    removeClasses.forEach(cls => element.classList.remove(cls));
+                }
+                if (addClass) {
+                    element.classList.add(addClass);
+                }
+            }
+
+            function mostrarModal(message) {
+                DOM.modalMessage.textContent = message;
+                DOM.modalOverlay.classList.remove('hidden');
+            }
+
+            function ocultarModal() {
+                DOM.modalOverlay.classList.add('hidden');
+            }
+
+            function marcarRespuesta(index) {
+                const pregunta = preguntas[index];
+
+                const botonCorrecto = botonesOpciones[pregunta.correct];
+                const indiceCorrecto = indicesPreguntas[index];
+
+                toggleClasses(indiceCorrecto, null, ['correcta', 'incorrecta']);
+
+                if (pregunta.respuestaUsuario !== null) {
+                    toggleClasses(botonCorrecto, 'correcta');
+
+                    if (pregunta.esCorrecta) {
+                        toggleClasses(indiceCorrecto, 'correcta');
+                    } else {
+                        const botonSeleccionado = botonesOpciones[pregunta.respuestaUsuario];
+                        toggleClasses(botonSeleccionado, 'incorrecta');
+                        toggleClasses(indiceCorrecto, 'incorrecta');
+                    }
+                }
+            }
+
+            function mostrarPregunta() {
+                const { preguntaActual, totalPreguntas } = estado;
+                DOM.resultadosFinales.classList.add('hidden');
+                DOM.contenidoPregunta.classList.remove('hidden');
+                DOM.rectanguloResumen.classList.remove('hidden');
+                DOM.finalizarBtn.textContent = 'Finalizar Test';
+
+                const pregunta = preguntas[preguntaActual];
+                const cleanedQuestion = pregunta.question.replace(/^\s*(\d+\.\s*)+/, '');
+                DOM.preguntaTexto.textContent = `${pregunta.numero}. ${cleanedQuestion}`;
+
+                botonesOpciones.forEach((boton, index) => {
+                    toggleClasses(boton, null, ['seleccionada', 'correcta', 'incorrecta']);
+                    boton.textContent = pregunta.options[index];
+                    boton.disabled = pregunta.comprobada;
+                });
+
+                if (pregunta.respuestaUsuario !== null) {
+                    toggleClasses(botonesOpciones[pregunta.respuestaUsuario], 'seleccionada');
+                    if (pregunta.comprobada) {
+                        marcarRespuesta(preguntaActual);
+                    }
+                }
+
+                if (indicesPreguntas) {
+                    indicesPreguntas.forEach(indice => indice.classList.remove('activa'));
+                    indicesPreguntas[preguntaActual].classList.add('activa');
+                }
+
+                DOM.comprobarBtn.classList.toggle('hidden', pregunta.comprobada);
+                actualizarEstadoBotones();
+            }
+
+            function manejarSeleccion(event) {
+                const boton = event.target.closest('.opcion');
+                if (boton) {
+                    const pregunta = preguntas[estado.preguntaActual];
+                    if (!pregunta.comprobada) {
+                        botonesOpciones.forEach(b => toggleClasses(b, null, ['seleccionada']));
+                        toggleClasses(boton, 'seleccionada');
+                    }
+                }
+            }
+
+            function comprobarRespuesta() {
+                const respuestaSeleccionadaActual = DOM.opcionesContenedor.querySelector('.opcion.seleccionada');
+                if (!respuestaSeleccionadaActual) {
+                    mostrarModal('Por favor, selecciona una respuesta antes de comprobar.');
+                    return;
+                }
+                const { preguntaActual } = estado;
+                const pregunta = preguntas[preguntaActual];
+                const respuestaIndex = parseInt(respuestaSeleccionadaActual.dataset.index);
+
+                pregunta.respuestaUsuario = respuestaIndex;
+                pregunta.comprobada = true;
+                pregunta.esCorrecta = (respuestaIndex === pregunta.correct);
+
+                if (pregunta.esCorrecta) {
+                    estado.respuestasCorrectas++;
+                } else {
+                    estado.respuestasIncorrectas++;
+                }
+
+                marcarRespuesta(preguntaActual);
+                actualizarResumen();
+
+                botonesOpciones.forEach(boton => boton.disabled = true);
+                DOM.comprobarBtn.classList.add('hidden');
+            }
+
+            function actualizarEstadoBotones() {
+                const { preguntaActual, totalPreguntas } = estado;
+                const esUltimaPregunta = preguntaActual === totalPreguntas - 1;
+                DOM.siguienteBtn.textContent = esUltimaPregunta ? 'Terminar' : 'Siguiente';
+            }
+
+            function siguientePregunta() {
+                const { preguntaActual, totalPreguntas } = estado;
+                if (preguntaActual < totalPreguntas - 1) {
+                    estado.preguntaActual++;
+                    mostrarPregunta();
+                } else {
+                    mostrarResultados();
+                }
+            }
+
+            function volverPregunta() {
+                const { preguntaActual } = estado;
+                if (preguntaActual > 0) {
+                    estado.preguntaActual--;
+                    mostrarPregunta();
+                }
+            }
+
+            function mostrarResultados() {
+                const { respuestasCorrectas, respuestasIncorrectas } = estado;
+                DOM.contenidoPregunta.classList.add('hidden');
+                DOM.resultadosFinales.classList.remove('hidden');
+
+                const correctasSpan = `<span class="resultados-finales-correctas">Correctas: ${respuestasCorrectas}</span>`;
+                const incorrectasSpan = `<span class="resultados-finales-incorrectas">Incorrectas: ${respuestasIncorrectas}</span>`;
+                DOM.resultadosTexto.innerHTML = `${correctasSpan} | ${incorrectasSpan}`;
+
+                DOM.finalizarBtn.textContent = 'Volver al Test';
+                DOM.rectanguloResumen.style.marginTop = '20px';
+            }
+
+            function crearIndices() {
+                DOM.indicesContenedor.innerHTML = Array.from(
+                    {length: estado.totalPreguntas},
+                    (_, i) => `<div class="indice-pregunta" data-index="${i}">${i+1}</div>`
+                ).join('');
+                indicesPreguntas = DOM.indicesContenedor.querySelectorAll('.indice-pregunta');
+            }
+
+            function manejarClickIndice(event) {
+                const indice = event.target.closest('.indice-pregunta');
+                if (indice) {
+                    estado.preguntaActual = parseInt(indice.dataset.index);
+                    mostrarPregunta();
+                }
+            }
+
+            function actualizarResumen() {
+                indicesPreguntas.forEach((indice, index) => {
+                    toggleClasses(indice, null, ['correcta', 'incorrecta']);
+                    const pregunta = preguntas[index];
+                    if (pregunta.comprobada) {
+                        if (pregunta.esCorrecta) {
+                            toggleClasses(indice, 'correcta');
+                        } else {
+                            toggleClasses(indice, 'incorrecta');
+                        }
+                    }
+                });
+            }
+
+            function toggleFinalizarTest() {
+                if (DOM.resultadosFinales.classList.contains('hidden')) {
+                    mostrarResultados();
+                } else {
+                    mostrarPregunta();
+                }
+            }
+            
+
+            function cacheElements() {
+                return {
+                    preguntaTexto: document.getElementById('pregunta-texto'),
+                    opcionesContenedor: document.getElementById('opciones-contenedor'),
+                    siguienteBtn: document.getElementById('siguiente-btn'),
+                    comprobarBtn: document.getElementById('comprobar-btn'),
+                    indicesContenedor: document.getElementById('indices-contenedor'),
+                    contenedorTest: document.querySelector('section.contenedor-test'),
+                    rectanguloResumen: document.querySelector('footer.rectangulo-resumen'),
+                    modalOverlay: document.getElementById('custom-modal-overlay'),
+                    modalMessage: document.getElementById('custom-modal-message'),
+                    modalOkBtn: document.getElementById('custom-modal-ok'),
+                    contenidoPregunta: document.getElementById('contenido-pregunta'),
+                    resultadosFinales: document.getElementById('resultados-finales'),
+                    resultadosTexto: document.getElementById('resultados-texto'),
+                    finalizarBtn: document.getElementById('finalizar-btn')
+                };
+            }
+
+            function initData() {
+                preguntas = preguntas.map(p => ({
+                    ...p,
+                    respuestaUsuario: null,
+                    comprobada: false,
+                    esCorrecta: false
+                }));
+
+                const fragmentoOpciones = document.createDocumentFragment();
+                for (let i = 0; i < 4; i++) {
+                    const boton = document.createElement('button');
+                    boton.className = 'opcion';
+                    boton.dataset.index = i;
+                    fragmentoOpciones.appendChild(boton);
+                }
+                DOM.opcionesContenedor.appendChild(fragmentoOpciones);
+
+                botonesOpciones = Array.from(DOM.opcionesContenedor.querySelectorAll('.opcion'));
+
+                crearIndices();
+            }
+
+            function setupEvents() {
+                DOM.contenedorTest.addEventListener('click', (event) => {
+                    const target = event.target;
+                    if (target.id === 'siguiente-btn') {
+                        siguientePregunta();
+                    } else if (target.id === 'volver-btn') {
+                        volverPregunta();
+                    } else if (target.id === 'comprobar-btn') {
+                        comprobarRespuesta();
+                    } else if (target.classList.contains('opcion')) {
+                        manejarSeleccion(event);
+                    }
+                });
+
+                DOM.rectanguloResumen.addEventListener('click', (event) => {
+                    const target = event.target;
+                    if (target.id === 'finalizar-btn') {
+                        toggleFinalizarTest();
+                    } else if (target.classList.contains('indice-pregunta')) {
+                        manejarClickIndice(event);
+                    }
+                });
+
+                DOM.modalOkBtn.addEventListener('click', ocultarModal);
+                
+            }
+
+            function init() {
+                DOM = cacheElements();
+                initData();
+                setupEvents();
+                mostrarPregunta();
+            }
+
+            init();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OPE 23-24-25 Osakidetza – Batería Común · Preguntas 191-210</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #F0F0F0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            position: relative;
+        }
+        .contenedor-principal {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+            padding: 20px;
+            z-index: 1;
+        }
+        section.contenedor-test, footer.rectangulo-resumen {
+            background-color: white;
+            padding: 20px;
+            border-radius: 2px;
+            width: 800px;
+            max-width: 800px;
+            text-align: center;
+        }
+        section.contenedor-test {
+            border: 1px solid #2b2a7f;
+        }
+        .titulo-test {
+            font-size: 24px;
+            font-weight: bold;
+            color: #6c757d;
+            margin: 0 0 8px 0;
+            text-align: center;
+        }
+        .subtitulo-test {
+            font-size: 14px;
+            color: #6c757d;
+            margin: 0 0 20px 0;
+            text-align: center;
+        }
+        .pregunta {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #333;
+            text-align: left;
+        }
+        .opciones-contenedor {
+            display: grid;
+            gap: 3px;
+            margin-bottom: 25px;
+        }
+        .opcion {
+            background-color: white;
+            border: none;
+            color: #495057;
+            padding: 15px;
+            border-radius: 2px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.2s, border-color 0.2s;
+            text-align: left;
+        }
+        .opcion:hover { background-color: #dee2e6; }
+        .opcion.seleccionada { background-color: #cce5ff; border-color: #2b2a7f; color: #004085; }
+        .opcion.correcta { background-color: #85d192; border-color: #85d192; color: #155724; cursor: default; }
+        .opcion.incorrecta { background-color: #f0a1a8; border-color: #f0a1a8; color: #721c24; cursor: default; }
+        .opcion.correcta:hover { background-color: #85d192; color: #155724; border-color: #85d192; }
+        .opcion.incorrecta:hover { background-color: #f0a1a8; color: #721c24; border-color: #f0a1a8; }
+        .navegacion-btn-contenedor {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            width: 100%;
+        }
+        .comprobar-btn, #finalizar-btn {
+            background-color: #cce5ff;
+            color: #004085;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 2px;
+            font-size: 12px;
+            width: 100px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .comprobar-btn:hover, #finalizar-btn:hover { background-color: #b3d7ff; }
+        .hidden { display: none; }
+        .navegacion-btn {
+            background-color: #E0E0E0;
+            color: #555;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 2px;
+            font-size: 12px;
+            width: 100px;
+            cursor: pointer;
+            transition: background-color 0.2s, color 0.2s;
+        }
+        .navegacion-btn:hover { background-color: #CFCFCF; }
+        .navegacion-btn:disabled { background-color: #f1f1f1; color: #aaa; cursor: not-allowed; }
+        footer.rectangulo-resumen {
+            background-color: #F0F0F0;
+            padding: 20px;
+            border-radius: 2px;
+            width: 800px;
+            margin-top: 20px;
+            overflow-y: auto;
+        }
+        .indices-contenedor {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+        .indice-pregunta {
+            width: 30px;
+            height: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            background-color: white;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            color: #495057;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        .indice-pregunta.activa { background-color: #cce5ff; color: #004085; }
+        .indice-pregunta:hover { background-color: #dee2e6; }
+        .indice-pregunta.correcta { background-color: #85d192; color: #155724; }
+        .indice-pregunta.incorrecta { background-color: #f0a1a8; color: #495057; }
+        .custom-modal-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+        }
+        .custom-modal {
+            background-color: white;
+            padding: 30px;
+            border-radius: 2px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+        }
+        .custom-modal button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 2px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+        .resultados-finales-container { text-align: center; }
+        .resultados-finales-texto { display: flex; justify-content: center; gap: 20px; }
+        .resultados-finales-correctas { color: #155724; font-weight: bold; }
+        .resultados-finales-incorrectas { color: #721c24; font-weight: bold; }
+        @media (max-width: 800px) {
+            section.contenedor-test, footer.rectangulo-resumen { width: 95%; padding: 15px; }
+            .opcion { padding: 10px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="contenedor-principal">
+        <h1 class="titulo-test">OPE 23-24-25 Osakidetza – Batería Común</h1>
+        <p class="subtitulo-test">Plan de Salud Euskadi 2030 · Preguntas 191–210</p>
+        <section class="contenedor-test">
+            <article id="contenido-pregunta">
+                <div class="pregunta" id="pregunta-texto"></div>
+                <div class="opciones-contenedor" id="opciones-contenedor"></div>
+                <div class="navegacion-btn-contenedor">
+                    <button id="comprobar-btn" class="comprobar-btn">Comprobar</button>
+                    <button id="siguiente-btn" class="navegacion-btn">Siguiente</button>
+                </div>
+            </article>
+            <div id="resultados-finales" class="hidden resultados-finales-container">
+                <h2>Resultados Finales</h2>
+                <div id="resultados-texto" class="resultados-finales-texto"></div>
+            </div>
+        </section>
+        <footer class="rectangulo-resumen" id="rectangulo-resumen">
+            <div class="indices-contenedor" id="indices-contenedor"></div>
+            <button id="finalizar-btn" class="comprobar-btn" style="width:100%;margin-top:20px;">Finalizar Test</button>
+        </footer>
+    </div>
+    <div id="custom-modal-overlay" class="custom-modal-overlay hidden">
+        <div class="custom-modal">
+            <p id="custom-modal-message"></p>
+            <button id="custom-modal-ok">Aceptar</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            let preguntas = [
+  {
+    "question": "¿Cuántos Objetivos Generales, clasificados como finalistas e instrumentales, se definen en la estructura del Plan de Salud Euskadi 2030? (191)",
+    "options": [
+      "a) Cinco Objetivos Generales.",
+      "b) Seis Objetivos Generales.",
+      "c) Siete Objetivos Generales.",
+      "d) Ocho Objetivos Generales."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "Según el Plan de Salud Euskadi 2030, la VISIÓN que se aspira a lograr como país es: (192)",
+    "options": [
+      "a) Convertirnos en el sistema de salud pública más sólido y resiliente de Europa.",
+      "b) Liderar una Euskadi más saludable.",
+      "c) Reducir la morbimortalidad evitable y disminuir las desigualdades en salud antes de 2030.",
+      "d) Lograr la sostenibilidad y excelencia en los sistemas asistenciales sanitarios y sociosanitarios."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "¿Cuál de los siguientes NO es un principio rector en los que se apoya el Plan de Salud Euskadi 2030? (193)",
+    "options": [
+      "a) La necesaria coordinación y colaboración interinstitucional, entre agentes y en todos los niveles.",
+      "b) Enfoque de Salud en Todas las Políticas y 'Una Sola Salud' ('One Health').",
+      "c) La autosuficiencia presupuestaria del Sistema Sanitario Público.",
+      "d) Contribución al Desarrollo Sostenible."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "El Objetivo General 1 (OG1) del Plan de Salud Euskadi 2030 se enfoca en: (194)",
+    "options": [
+      "a) Promover la salud de las mujeres y la salud reproductiva en la edad adulta.",
+      "b) Lograr que niñas, niños y adolescentes nazcan, crezcan y se desarrollen con todo su potencial de salud.",
+      "c) Mejorar la salud mental y reducir la morbimortalidad asociada a trastornos mentales.",
+      "d) La prevención y el control de las enfermedades no transmisibles (ENT)."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "El Objetivo General 4 (OG4) del Plan de Salud Euskadi 2030 se define como: \"lograr la sostenibilidad y excelencia en los sistemas asistenciales sanitarios y sociosanitarios de Euskadi\", ¿en términos de qué tres conceptos clave? (195)",
+    "options": [
+      "a) Eficiencia, accesibilidad e innovación.",
+      "b) Calidad, humanización y seguridad.",
+      "c) Equidad, intersectorialidad y coordinación.",
+      "d) Investigación, formación y evaluación."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "¿Cuál de los siguientes enfoques es uno de los fundamentos estratégicos detallados en el Plan de Salud Euskadi 2030, además de la reducción de las desigualdades en salud y la Salud en Todas las Políticas? (196)",
+    "options": [
+      "a) El enfoque de 'Un Mundo, Una Solución' ('One World, One Solution').",
+      "b) El enfoque del Marco de Resultados en Salud (MRS).",
+      "c) El enfoque de 'Una Sola Salud' ('One Health').",
+      "d) El enfoque de Centralidad del Sistema Sanitario."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "¿A qué hace referencia el acrónimo AVAD en el Plan de Salud Euskadi 2030? (197)",
+    "options": [
+      "a) Áreas de Valoración de la Atención al Dependiente.",
+      "b) Años de Vida Activa Desaprovechados.",
+      "c) Atención Vasca a la Adicción a Drogas.",
+      "d) Años de Vida sana perdidos Ajustados por Discapacidad."
+    ],
+    "correct": 3
+  },
+  {
+    "question": "¿Cuántas personas aproximadamente, entre expertas, profesionales, entidades y ciudadanía, contribuyeron en la elaboración del Plan de Salud Euskadi 2030? (198)",
+    "options": [
+      "a) Cerca de 50 personas.",
+      "b) Menos de 100 personas.",
+      "c) Cerca de 200 personas.",
+      "d) Más de 300 personas."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "La MISIÓN del Plan de Salud Euskadi 2030 se define como: (199)",
+    "options": [
+      "a) Garantizar la cobertura universal y el acceso equitativo a los servicios de Osakidetza.",
+      "b) Generar valor a la ciudadanía vasca en términos de una mayor esperanza de vida y menos dependencia.",
+      "c) Definir un horizonte de Salud y facilitar la orientación y el diseño de políticas eficaces que lleven a conseguirlo.",
+      "d) Superar la Ley de Salud Pública de Euskadi y el Plan Estratégico de Osakidetza en impacto sobre la salud."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "¿Cuál es uno de los objetivos clave del Plan de Salud Euskadi 2030, reiterado en varias secciones, respecto a la equidad y la gestión de la enfermedad? (200)",
+    "options": [
+      "a) Garantizar la participación de la empresa privada en la gestión de servicios hospitalarios.",
+      "b) Aumentar la esperanza de vida en 5 años en todos los colectivos sociales.",
+      "c) Reducir la morbimortalidad evitable y disminuir las desigualdades en salud.",
+      "d) Implementar un programa de cribado universal para todos los tipos de cáncer."
+    ],
+    "correct": 2
+  },
+  {
+    "question": "¿Qué órganos fueron responsables de la dirección y elaboración del Plan de Salud Euskadi 2030, según el documento? (201)",
+    "options": [
+      "a) El Consejo de Gobierno y el Departamento de Hacienda.",
+      "b) Un Comité de Dirección y un Comité Estratégico.",
+      "c) La Dirección General de Osakidetza y Lehendakaritza.",
+      "d) El Observatorio de Salud y la consultora LKS S Coop."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "Dentro del Objetivo General 5 del Plan de Salud Euskadi 2030, ¿cuáles son las características que deben definir al sistema de salud pública para responder a los nuevos retos? (202)",
+    "options": [
+      "a) Estratégico, descentralizado, participativo y eficiente.",
+      "b) Flexible, sólido, ágil y escalable.",
+      "c) Universal, equitativo, transparente y tecnológico.",
+      "d) Resiliente, preventivo, comunitario e integral."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "¿Qué enfoque de investigación prioriza el Plan de Salud Euskadi 2030 para asegurar que los avances científicos lleguen de forma efectiva a la práctica clínica y la salud de la población? (203)",
+    "options": [
+      "a) Enfoque de investigación básica y fundamental.",
+      "b) Enfoque de investigación traslacional.",
+      "c) Enfoque de investigación puramente epidemiológica.",
+      "d) Enfoque de investigación competitiva internacional."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "Según el modelo de evaluación del Plan de Salud Euskadi 2030, ¿cuáles son los cuatro criterios fundamentales para determinar el éxito de las intervenciones? (204)",
+    "options": [
+      "a) Impacto, cobertura, equidad y transparencia.",
+      "b) Relevancia, efectividad, eficiencia y sostenibilidad.",
+      "c) Rentabilidad, participación, innovación y prestigio.",
+      "d) Calidad, calidez, rapidez y ahorro presupuestario."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "En la lucha contra las desigualdades, ¿qué tipo de soluciones habitacionales promueve el Plan de Salud Euskadi 2030 para las diferentes etapas de la vida? (205)",
+    "options": [
+      "a) Construcción de viviendas de protección oficial exclusivamente rurales.",
+      "b) Soluciones habitacionales asequibles, accesibles y adaptadas al ciclo vital.",
+      "c) Ayudas directas al alquiler únicamente para personas menores de 30 años.",
+      "d) Fomento de grandes centros residenciales para todas las personas con enfermedades crónicas."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "Según la comparativa de la Memoria Económica del Plan de Salud Euskadi 2030, ¿cuál es el programa presupuestario (fuera del gasto general de Osakidetza) con mayor dotación? (206)",
+    "options": [
+      "a) Programa de Salud Pública.",
+      "b) Programa de Farmacia.",
+      "c) Programa de Adicciones.",
+      "d) Programa de Investigación y Planificación."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "El Plan de Salud Euskadi 2030 busca lograr \"comunidades amigables\" para las personas mayores. ¿Cuál es la finalidad última de esta estrategia? (207)",
+    "options": [
+      "a) Segregar los espacios públicos por franjas de edad.",
+      "b) Adaptar el entorno físico y social para fomentar un envejecimiento activo y con sentido.",
+      "c) Aumentar el número de plazas en residencias geriátricas de alta especialización.",
+      "d) Limitar el acceso de vehículos a las zonas cercanas a los centros de salud."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "En el ámbito de la salud digital, ¿qué concepto destaca el Plan de Salud Euskadi 2030 para transformar la atención personalizada? (208)",
+    "options": [
+      "a) La teleasistencia robótica obligatoria en todos los domicilios.",
+      "b) La medicina de precisión y la integración de datos genómicos.",
+      "c) La eliminación definitiva de la historia clínica en papel en favor del PDF.",
+      "d) La creación de una red social exclusiva para pacientes crónicos/as."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "¿Cómo define el Plan de Salud Euskadi 2030 el concepto de \"Intersectorialidad\" en la gestión de la salud? (209)",
+    "options": [
+      "a) La competencia entre diferentes sectores para obtener fondos públicos.",
+      "b) La colaboración entre departamentos del Gobierno para que la salud esté en todas las políticas.",
+      "c) La privatización de sectores sanitarios no críticos.",
+      "d) La creación de un único departamento que gestione salud, educación y vivienda."
+    ],
+    "correct": 1
+  },
+  {
+    "question": "¿Cuál es la visión del Plan de Salud Euskadi 2030 sobre el uso de la evidencia científica en la toma de decisiones políticas? (210)",
+    "options": [
+      "a) Es un elemento opcional supeditado a la oportunidad política.",
+      "b) Es la base fundamental para el diseño, implementación y evaluación de las políticas de salud.",
+      "c) Solo se debe aplicar en casos de alertas sanitarias internacionales.",
+      "d) Se reserva exclusivamente para el ámbito académico, no para el legislativo."
+    ],
+    "correct": 1
+  }
+];
+
+            let DOM = {};
+            const estado = {
+                preguntaActual: 0,
+                respuestasCorrectas: 0,
+                respuestasIncorrectas: 0,
+                totalPreguntas: preguntas.length
+            };
+            let botonesOpciones;
+            let indicesPreguntas;
+
+            function toggleClasses(element, addClass, removeClasses) {
+                if (removeClasses && removeClasses.length > 0) removeClasses.forEach(cls => element.classList.remove(cls));
+                if (addClass) element.classList.add(addClass);
+            }
+            function mostrarModal(message) {
+                DOM.modalMessage.textContent = message;
+                DOM.modalOverlay.classList.remove('hidden');
+            }
+            function ocultarModal() { DOM.modalOverlay.classList.add('hidden'); }
+
+            function marcarRespuesta(index) {
+                const pregunta = preguntas[index];
+                const botonCorrecto = botonesOpciones[pregunta.correct];
+                const indiceCorrecto = indicesPreguntas[index];
+                toggleClasses(indiceCorrecto, null, ['correcta', 'incorrecta']);
+                if (pregunta.respuestaUsuario !== null) {
+                    toggleClasses(botonCorrecto, 'correcta');
+                    if (pregunta.esCorrecta) {
+                        toggleClasses(indiceCorrecto, 'correcta');
+                    } else {
+                        toggleClasses(botonesOpciones[pregunta.respuestaUsuario], 'incorrecta');
+                        toggleClasses(indiceCorrecto, 'incorrecta');
+                    }
+                }
+            }
+
+            function mostrarPregunta() {
+                const { preguntaActual } = estado;
+                DOM.resultadosFinales.classList.add('hidden');
+                DOM.contenidoPregunta.classList.remove('hidden');
+                DOM.rectanguloResumen.classList.remove('hidden');
+                DOM.finalizarBtn.textContent = 'Finalizar Test';
+
+                const pregunta = preguntas[preguntaActual];
+                const cleanedQuestion = pregunta.question.replace(/^\s*(\d+\.\s*)+/, '');
+                DOM.preguntaTexto.textContent = `${preguntaActual + 1}. ${cleanedQuestion}`;
+
+                botonesOpciones.forEach((boton, index) => {
+                    toggleClasses(boton, null, ['seleccionada', 'correcta', 'incorrecta']);
+                    boton.textContent = pregunta.options[index];
+                    boton.disabled = pregunta.comprobada;
+                });
+
+                if (pregunta.respuestaUsuario !== null) {
+                    toggleClasses(botonesOpciones[pregunta.respuestaUsuario], 'seleccionada');
+                    if (pregunta.comprobada) marcarRespuesta(preguntaActual);
+                }
+
+                if (indicesPreguntas) {
+                    indicesPreguntas.forEach(indice => indice.classList.remove('activa'));
+                    indicesPreguntas[preguntaActual].classList.add('activa');
+                }
+
+                DOM.comprobarBtn.classList.toggle('hidden', pregunta.comprobada);
+                const esUltima = preguntaActual === estado.totalPreguntas - 1;
+                DOM.siguienteBtn.textContent = esUltima ? 'Terminar' : 'Siguiente';
+            }
+
+            function manejarSeleccion(event) {
+                const boton = event.target.closest('.opcion');
+                if (boton && !preguntas[estado.preguntaActual].comprobada) {
+                    botonesOpciones.forEach(b => toggleClasses(b, null, ['seleccionada']));
+                    toggleClasses(boton, 'seleccionada');
+                }
+            }
+
+            function comprobarRespuesta() {
+                const seleccionada = DOM.opcionesContenedor.querySelector('.opcion.seleccionada');
+                if (!seleccionada) { mostrarModal('Por favor, selecciona una respuesta antes de comprobar.'); return; }
+                const { preguntaActual } = estado;
+                const pregunta = preguntas[preguntaActual];
+                const respuestaIndex = parseInt(seleccionada.dataset.index);
+                pregunta.respuestaUsuario = respuestaIndex;
+                pregunta.comprobada = true;
+                pregunta.esCorrecta = (respuestaIndex === pregunta.correct);
+                if (pregunta.esCorrecta) estado.respuestasCorrectas++;
+                else estado.respuestasIncorrectas++;
+                marcarRespuesta(preguntaActual);
+                actualizarResumen();
+                botonesOpciones.forEach(b => b.disabled = true);
+                DOM.comprobarBtn.classList.add('hidden');
+            }
+
+            function siguientePregunta() {
+                const { preguntaActual, totalPreguntas } = estado;
+                if (preguntaActual < totalPreguntas - 1) { estado.preguntaActual++; mostrarPregunta(); }
+                else mostrarResultados();
+            }
+
+            function mostrarResultados() {
+                DOM.contenidoPregunta.classList.add('hidden');
+                DOM.resultadosFinales.classList.remove('hidden');
+                const c = `<span class="resultados-finales-correctas">Correctas: ${estado.respuestasCorrectas}</span>`;
+                const i = `<span class="resultados-finales-incorrectas">Incorrectas: ${estado.respuestasIncorrectas}</span>`;
+                DOM.resultadosTexto.innerHTML = `${c} | ${i}`;
+                DOM.finalizarBtn.textContent = 'Volver al Test';
+            }
+
+            function crearIndices() {
+                DOM.indicesContenedor.innerHTML = Array.from(
+                    { length: estado.totalPreguntas },
+                    (_, i) => `<div class="indice-pregunta" data-index="${i}">${i + 191}</div>`
+                ).join('');
+                indicesPreguntas = DOM.indicesContenedor.querySelectorAll('.indice-pregunta');
+            }
+
+            function actualizarResumen() {
+                indicesPreguntas.forEach((indice, index) => {
+                    toggleClasses(indice, null, ['correcta', 'incorrecta']);
+                    const p = preguntas[index];
+                    if (p.comprobada) toggleClasses(indice, p.esCorrecta ? 'correcta' : 'incorrecta');
+                });
+            }
+
+            function toggleFinalizarTest() {
+                if (DOM.resultadosFinales.classList.contains('hidden')) mostrarResultados();
+                else mostrarPregunta();
+            }
+
+            function cacheElements() {
+                return {
+                    preguntaTexto: document.getElementById('pregunta-texto'),
+                    opcionesContenedor: document.getElementById('opciones-contenedor'),
+                    siguienteBtn: document.getElementById('siguiente-btn'),
+                    comprobarBtn: document.getElementById('comprobar-btn'),
+                    indicesContenedor: document.getElementById('indices-contenedor'),
+                    contenedorTest: document.querySelector('section.contenedor-test'),
+                    rectanguloResumen: document.querySelector('footer.rectangulo-resumen'),
+                    modalOverlay: document.getElementById('custom-modal-overlay'),
+                    modalMessage: document.getElementById('custom-modal-message'),
+                    modalOkBtn: document.getElementById('custom-modal-ok'),
+                    contenidoPregunta: document.getElementById('contenido-pregunta'),
+                    resultadosFinales: document.getElementById('resultados-finales'),
+                    resultadosTexto: document.getElementById('resultados-texto'),
+                    finalizarBtn: document.getElementById('finalizar-btn')
+                };
+            }
+
+            function initData() {
+                preguntas = preguntas.map(p => ({ ...p, respuestaUsuario: null, comprobada: false, esCorrecta: false }));
+                const frag = document.createDocumentFragment();
+                for (let i = 0; i < 4; i++) {
+                    const b = document.createElement('button');
+                    b.className = 'opcion';
+                    b.dataset.index = i;
+                    frag.appendChild(b);
+                }
+                DOM.opcionesContenedor.appendChild(frag);
+                botonesOpciones = Array.from(DOM.opcionesContenedor.querySelectorAll('.opcion'));
+                crearIndices();
+            }
+
+            function setupEvents() {
+                DOM.contenedorTest.addEventListener('click', event => {
+                    const t = event.target;
+                    if (t.id === 'siguiente-btn') siguientePregunta();
+                    else if (t.id === 'comprobar-btn') comprobarRespuesta();
+                    else if (t.classList.contains('opcion')) manejarSeleccion(event);
+                });
+                DOM.rectanguloResumen.addEventListener('click', event => {
+                    const t = event.target;
+                    if (t.id === 'finalizar-btn') toggleFinalizarTest();
+                    else if (t.classList.contains('indice-pregunta')) {
+                        estado.preguntaActual = parseInt(t.dataset.index);
+                        mostrarPregunta();
+                    }
+                });
+                DOM.modalOkBtn.addEventListener('click', ocultarModal);
+            }
+
+            function init() {
+                DOM = cacheElements();
+                initData();
+                setupEvents();
+                mostrarPregunta();
+            }
+
+            init();
+        });
+    </script>
+</body>
+</html>
